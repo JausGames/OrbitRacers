@@ -14,6 +14,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
 
         var moy = new Vector3();
 
@@ -44,10 +45,9 @@ public class CameraController : MonoBehaviour
             if (dist[i + 1] > dist[i]) farest = dist[i+1];
         }
 
-        var x = 18f - 18f / (farest * 0.3f + 1);
-        var z = -30f + 30f / (farest * 0.2f + 1);
+        var z = -100f + 100f / (farest * 0.2f + 1);
 
-        var posMoy = moy / players.Count + new Vector3(0f, Mathf.Clamp(x, 6f ,17f), Mathf.Clamp(z, -28f, -6f));
+        var posMoy = moy / players.Count + new Vector3(0f, 0f, Mathf.Clamp(z, -100f, -50f));
         transform.position = Vector3.Slerp(transform.position, posMoy, 0.05f);
     }
     private void OnDrawGizmos()

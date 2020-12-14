@@ -43,6 +43,7 @@ namespace Inputs
         {
             if (controller == null) return;
             var move = context.ReadValue<Vector2>();
+            Debug.Log("Move magnitude = " + move.magnitude);
             controller.SetMove(move);
         }
         public void OnLook(CallbackContext context)
@@ -59,10 +60,10 @@ namespace Inputs
         }
         public void OnDash(CallbackContext context)
         {
-            /*if (combat == null) return;
+            if (controller == null) return;
             var canc = context.canceled;
             var perf = context.performed;
-            combat.Dash(!canc, perf);*/
+            controller.Dash(perf, canc);
         }
         public void OnJump(CallbackContext context)
         {

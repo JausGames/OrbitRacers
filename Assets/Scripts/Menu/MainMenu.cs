@@ -13,6 +13,7 @@ public class MainMenu : MonoBehaviour
     [SerializeField] List<GameObject> playerTypes = new List<GameObject>();
     [SerializeField] MapHandler mapHandler;
     [SerializeField] private Text UICount;
+    [SerializeField] private Text pressStart;
     [SerializeField] private Button play;
     [SerializeField] private Button quit;
     [SerializeField] private List<Image> playerCircle = new List<Image>();
@@ -51,17 +52,23 @@ public class MainMenu : MonoBehaviour
     {
         List<Inputs.PlayerInputHandlerMenu> inputLocal = new List<Inputs.PlayerInputHandlerMenu>(); 
         inputLocal.AddRange(FindObjectsOfType<Inputs.PlayerInputHandlerMenu>());
+        if (inputLocal.Count >= 1) pressStart.enabled = false;
+        else pressStart.enabled = true;
         if (inputLocal.Count >= 2) play.interactable = true;
         if (inputLocal.Count < 2) play.interactable = false;
         for (int i = 0; i < inputLocal.Count; i++)
         {
-            PlayerSelect[2 * i].interactable = true;
-            PlayerSelect[2 * i + 1].interactable = true;
+            playerText[i].enabled = true;
+            playerPicture[i].enabled = true;
+            PlayerSelect[2 * i + 1].gameObject.SetActive(true);
+            PlayerSelect[2 * i].gameObject.SetActive(true);
         }
         for (int i = inputLocal.Count; i < 4; i++)
         {
-            PlayerSelect[2 * i].interactable = false;
-            PlayerSelect[2 * i + 1].interactable = false;
+            playerText[i].enabled = false;
+            playerPicture[i].enabled = false;
+            PlayerSelect[2 * i].gameObject.SetActive(false);
+            PlayerSelect[2 * i + 1].gameObject.SetActive(false);
         }
         inputs.Clear();
         inputs.AddRange(inputLocal);
@@ -98,42 +105,42 @@ public class MainMenu : MonoBehaviour
             case 0:
                 if (FindNameID(playerText[0].text) == 0) return;
                 playerText[0].text = FindPlayerName(playerTypes[FindNameID(playerText[0].text) - 1]);
-                //playerPicture[0].sprite = FindSprite(FindNameID(playerText[0].text) - 1, -1);
+                playerPicture[0].sprite = FindSprite(FindNameID(playerText[0].text) - 1, -1);
                 break;
             case 1:
                 if (FindNameID(playerText[0].text) == playerTypes.Count - 1) return;
                 playerText[0].text = FindPlayerName(playerTypes[FindNameID(playerText[0].text) + 1]);
-                //playerPicture[0].sprite = FindSprite(FindNameID(playerText[0].text) + 1, 1);
+                playerPicture[0].sprite = FindSprite(FindNameID(playerText[0].text) + 1, 1);
                 break;
             case 2:
                 if (FindNameID(playerText[1].text) == 0) return;
                 playerText[1].text = FindPlayerName(playerTypes[FindNameID(playerText[1].text) - 1]);
-                //playerPicture[1].sprite = FindSprite(FindNameID(playerText[1].text) - 1, -1);
+                playerPicture[1].sprite = FindSprite(FindNameID(playerText[1].text) - 1, -1);
                 break;
             case 3:
                 if (FindNameID(playerText[1].text) == playerTypes.Count - 1) return;
                 playerText[1].text = FindPlayerName(playerTypes[FindNameID(playerText[1].text) + 1]);
-                //playerPicture[1].sprite = FindSprite(FindNameID(playerText[1].text) + 1, 1);
+                playerPicture[1].sprite = FindSprite(FindNameID(playerText[1].text) + 1, 1);
                 break;
             case 4:
                 if (FindNameID(playerText[2].text) == 0) return;
                 playerText[2].text = FindPlayerName(playerTypes[FindNameID(playerText[2].text) - 1]);
-                //playerPicture[2].sprite = FindSprite(FindNameID(playerText[2].text) - 1, -1);
+                playerPicture[2].sprite = FindSprite(FindNameID(playerText[2].text) - 1, -1);
                 break;
             case 5:
                 if (FindNameID(playerText[2].text) == playerTypes.Count - 1) return;
                 playerText[2].text = FindPlayerName(playerTypes[FindNameID(playerText[2].text) + 1]);
-                //playerPicture[2].sprite = FindSprite(FindNameID(playerText[2].text) + 1, 1);
+                playerPicture[2].sprite = FindSprite(FindNameID(playerText[2].text) + 1, 1);
                 break;
             case 6:
                 if (FindNameID(playerText[3].text) == 0) return;
                 playerText[3].text = FindPlayerName(playerTypes[FindNameID(playerText[3].text) - 1]);
-                //playerPicture[3].sprite = FindSprite(FindNameID(playerText[3].text) - 1, -1);
+                playerPicture[3].sprite = FindSprite(FindNameID(playerText[3].text) - 1, -1);
                 break;
             case 7:
                 if (FindNameID(playerText[3].text) == playerTypes.Count - 1) return;
                 playerText[3].text = FindPlayerName(playerTypes[FindNameID(playerText[3].text) + 1]);
-                //playerPicture[3].sprite = FindSprite(FindNameID(playerText[3].text) + 1, 1);
+                playerPicture[3].sprite = FindSprite(FindNameID(playerText[3].text) + 1, 1);
                 break;
             default:
                 Debug.Log("Player selection Switch Case not correct");
@@ -144,11 +151,11 @@ public class MainMenu : MonoBehaviour
     {
         return player.name;
     }
-   /* private Sprite FindSprite(int playerNb, int prevOrNext)
+   private Sprite FindSprite(int playerNb, int prevOrNext)
     {
-        if (playerNb >= playerTypes.Count || playerNb <= 0) return playerTypes[playerNb - prevOrNext].GetComponent<SpellManager>().GetPicture();
-        else return playerTypes[playerNb - prevOrNext].GetComponent<SpellManager>().GetPicture();
-    }*/
+        if (playerNb >= playerTypes.Count || playerNb <= 0) return playerTypes[playerNb - prevOrNext].GetComponent<Player>().GetPicture();
+        else return playerTypes[playerNb - prevOrNext].GetComponent<Player>().GetPicture();
+    }
     private GameObject FindNamePlayer(string player)
     {
         foreach(GameObject obj in playerTypes)

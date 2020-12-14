@@ -40,7 +40,6 @@ public class MassicObject : MonoBehaviour
         {
         }
     }
-
     public Rigidbody2D GetRigidbody()
     {
         return body;
@@ -74,6 +73,7 @@ public class MassicObject : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D colision)
     {
+        if (hasColid) return;
         foreach (ContactPoint2D contact in colision.contacts)
         {
             Debug.DrawRay(contact.point, contact.normal, Color.red);
@@ -81,16 +81,16 @@ public class MassicObject : MonoBehaviour
         if (colision.gameObject.GetComponent<MassicObject>())
         {
             var obj = colision.gameObject.GetComponent<MassicObject>();
-            /*if (obj.GetSize() > size)
+            if (obj.GetSize() > size && this.size <= Size.Player)
             {
                 obj.AddMass(mass);
                 mass = 0f;
                 body.velocity = Vector3.zero;
                 body.freezeRotation = true;
-                body.isKinematic = true;
+                //body.isKinematic = true;
                 transform.SetParent(obj.gameObject.transform);
                 hasColid = true;
-            }*/
+            }
         }
     }
 }
