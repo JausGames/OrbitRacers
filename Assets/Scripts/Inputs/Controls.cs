@@ -76,7 +76,7 @@ namespace Inputs
                 {
                     ""name"": """",
                     ""id"": ""a7d2e195-f7d1-4ba6-bab8-99f1490f0997"",
-                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",

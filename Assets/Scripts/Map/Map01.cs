@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Map01 : Map
 {
-    Vector3[]  positions = new Vector3[] {   new Vector3(30, 0, 0),
-                                        new Vector3(-30, 0, 0),
+    Vector3[]  positions = new Vector3[] {   new Vector3(-30, 10, 0),
+                                        new Vector3(-30, -10, 0),
                                         new Vector3(0, 20, 0),
                                         new Vector3(0, -20, 0)
                                     };
