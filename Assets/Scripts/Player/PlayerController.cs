@@ -14,11 +14,14 @@ public class PlayerController : MassicObject
     [SerializeField] private Vector3 move;
     [SerializeField] private float index;
 
+    void Start()
+    {
+        body.isKinematic = true;
+    }
     void FixedUpdate()
     {
         AddForces();
         var currentSpeed = body.velocity;
-        Debug.Log("Current Speed = " + currentSpeed.magnitude);
         if (currentSpeed.magnitude < MAX_SPEED || Vector3.Dot(currentSpeed.normalized, move.normalized) <= 0f)
         {
             body.AddForce(move * speed, ForceMode2D.Impulse);
@@ -46,6 +49,10 @@ public class PlayerController : MassicObject
     public void SetPlayerIndex(float value)
     {
         index = value;
+    }
+    public void SetCanMove(bool value)
+    {
+        body.isKinematic = !value;
     }
     public void Dash(bool perf, bool canc)
     {

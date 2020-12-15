@@ -91,7 +91,7 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("PlayerManager, Set Can Move");
         foreach (Player player in players)
         {
-            //player.controller.SetCanMove(true);
+            player.controller.SetCanMove(true);
             //player.combat.SetCanMove(true);
         }
 

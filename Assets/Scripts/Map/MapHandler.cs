@@ -14,4 +14,16 @@ public class MapHandler : MonoBehaviour
         }
         return maps[0];
     }
+    public int GetMapId(Map map)
+    {
+        for(int i = 0; i < maps.Count; i++)
+        {
+            if (maps[i] == map) return i;
+        }
+        return 0;
+    }
+    public List<Map> GetMaps()
+    {
+        return maps;
+    }
 }

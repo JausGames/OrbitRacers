@@ -5,6 +5,8 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] List<Player> players;
+    [SerializeField] float maxZoom = -40f;
+    [SerializeField] float minZoom = -150f;
     // Start is called before the first frame update
     void Start()
     {
@@ -45,9 +47,9 @@ public class CameraController : MonoBehaviour
             if (dist[i + 1] > dist[i]) farest = dist[i+1];
         }
 
-        var z = -100f + 100f / (farest * 0.2f + 1);
+        var z = minZoom - minZoom / (farest * 0.2f + 1);
 
-        var posMoy = moy / players.Count + new Vector3(0f, 0f, Mathf.Clamp(z, -100f, -50f));
+        var posMoy = moy / players.Count + new Vector3(0f, 0f, Mathf.Clamp(z, minZoom, maxZoom));
         transform.position = Vector3.Slerp(transform.position, posMoy, 0.05f);
     }
     private void OnDrawGizmos()

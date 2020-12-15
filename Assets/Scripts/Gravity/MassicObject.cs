@@ -15,7 +15,7 @@ public class MassicObject : MonoBehaviour
     protected Rigidbody2D body;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         body.mass = mass;

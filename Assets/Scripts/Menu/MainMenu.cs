@@ -16,6 +16,10 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private Text pressStart;
     [SerializeField] private Button play;
     [SerializeField] private Button quit;
+    [SerializeField] private GameObject mapPicker;
+    [SerializeField] private Text mapName;
+    [SerializeField] private Button nextMap;
+    [SerializeField] private Button previousMap;
     [SerializeField] private List<Image> playerCircle = new List<Image>();
     [SerializeField] private List<Text> playerText = new List<Text>();
     [SerializeField] private List<Image> playerPicture = new List<Image>();
@@ -25,8 +29,13 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        mapName.text = mapHandler.GetMaps()[0].GetName();
         play.onClick.AddListener(ChangeScene);
         quit.onClick.AddListener(QuitGame);
+
+        nextMap.onClick.AddListener(NextMap);
+        previousMap.onClick.AddListener(PreviousMap);
+
         for (int i = 0; i < playerText.Count; i++)
         {
             Debug.Log(playerText[i].text);
@@ -52,8 +61,16 @@ public class MainMenu : MonoBehaviour
     {
         List<Inputs.PlayerInputHandlerMenu> inputLocal = new List<Inputs.PlayerInputHandlerMenu>(); 
         inputLocal.AddRange(FindObjectsOfType<Inputs.PlayerInputHandlerMenu>());
-        if (inputLocal.Count >= 1) pressStart.enabled = false;
-        else pressStart.enabled = true;
+        if (inputLocal.Count >= 1)
+        {
+            mapPicker.SetActive(true);
+            pressStart.enabled = false;
+        }
+        else
+        {
+            mapPicker.SetActive(false);
+            pressStart.enabled = true;
+        }
         if (inputLocal.Count >= 2) play.interactable = true;
         if (inputLocal.Count < 2) play.interactable = false;
         for (int i = 0; i < inputLocal.Count; i++)
@@ -81,11 +98,29 @@ public class MainMenu : MonoBehaviour
             playerCircle[i].color = Color.red;
         }
     }
+    private void NextMap()
+    {
+        var nb = mapHandler.GetMaps().Count;
+        var currMap = mapHandler.GetMapByName(mapName.text);
+        var nextId = mapHandler.GetMapId(currMap) + 1;
+        if (nextId < nb) mapName.text = mapHandler.GetMaps()[nextId].GetName();
+        else mapName.text = mapHandler.GetMaps()[0].GetName();
+
+    }
+    private void PreviousMap()
+    {
+        var nb = mapHandler.GetMaps().Count;
+        var currMap = mapHandler.GetMapByName(mapName.text);
+        var previousId = mapHandler.GetMapId(currMap) - 1;
+        if (previousId >= 0) mapName.text = mapHandler.GetMaps()[previousId].GetName();
+        else mapName.text = mapHandler.GetMaps()[nb - 1].GetName();
+
+    }
 
     private void ChangeScene()
     {
         if (MatchManager.instance == null) Instantiate(MatchManagerPrefab);
-        var map = mapHandler.GetMapByName("Map01");
+        var map = mapHandler.GetMapByName(mapName.text);
         var spawnwPos = map.GetPositions();
         PlayerManager.instance.SetSpawnPositions(spawnwPos);
         var list = new List<GameObject>();
@@ -95,7 +130,7 @@ public class MainMenu : MonoBehaviour
         }
         Debug.Log("ChangeScene");
         MatchManager.instance.SetPlayers(list);
-        SceneManager.LoadScene("BaseGame");
+        SceneManager.LoadScene(mapName.text + "Scene");
     }
     private void ChangePlayer(int nb)
     {
