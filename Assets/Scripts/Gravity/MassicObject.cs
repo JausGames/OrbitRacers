@@ -2,75 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MassicObject : MonoBehaviour
+public class MassicObject : CelestialObject
 {
-    public enum Size { Ball, Player, Celestial, Planet };
 
-    [SerializeField] private float mass;
-    [SerializeField] List<MassicObject> interactables = new List<MassicObject>();
-    [SerializeField] Vector3 initForce = new Vector3();
-    [SerializeField] Size size;
     [SerializeField] bool hasColid = false;
-    [SerializeField] MassicObject parent;
-    protected Rigidbody2D body;
+    Vector2 deltaVelocity = Vector2.zero;
 
-    // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
-        body = GetComponent<Rigidbody2D>();
-        body.mass = mass;
-        var interacts = FindObjectsOfType<MassicObject>();
-        foreach(MassicObject obj in interacts)
-        {
-            if (obj.gameObject != this.gameObject && obj.GetSize() <= size) interactables.Add(obj);
-        }
-        body.AddForce(initForce, ForceMode2D.Impulse);
-
+        body.velocity = initSpeed;
     }
-
     // Update is called once per frame
     void FixedUpdate()
     {
         if (!hasColid)
         {
-            AddForces();
+            //UpdateVelocity(interactables);
             Debug.DrawRay(transform.position, body.velocity, Color.white);
         }
         else
         {
         }
     }
-    public Rigidbody2D GetRigidbody()
-    {
-        return body;
-    }
-    public float GetMass()
-    {
-        return mass;
-    }
-    public void AddMass(float value)
-    {
-        Debug.Log("Add mass : " + this.gameObject);
-        mass += value;
-    }
-    public Size GetSize()
-    {
-        return size;
-    }
     public Vector3 GetSpeed()
     {
         return body.velocity;
     }
-    protected void AddForces()
+    /*virtual protected void UpdateVelocity(List<CelestialObject> interactables)
     {
-        foreach (MassicObject obj in interactables)
+        var force = Vector2.zero;
+        foreach (CelestialObject obj in interactables)
         {
-            var rbody = obj.GetRigidbody();
-            var vect = this.transform.position - obj.transform.position;
-            var dist = vect.magnitude;
-            rbody.AddForce(vect.normalized * (mass + obj.GetMass()) / (dist * dist), ForceMode2D.Impulse);
+            var rbody = obj.GetBody();
+            var vect =  obj.transform.position - this.transform.position;
+            var dist = vect.sqrMagnitude;
+            force += new Vector2((vect.normalized * Universe.gravitationalConstant * (mass + obj.GetMass()) / dist).x, 
+                                ( vect.normalized * Universe.gravitationalConstant * (mass + obj.GetMass()) / dist).y);
         }
-    }
+        body.AddForce(force * mass, ForceMode2D.Impulse);
+        Debug.DrawRay(this.Position, force, Color.yellow);
+    }*/
     void OnCollisionEnter2D(Collision2D colision)
     {
         if (hasColid) return;
@@ -78,19 +49,35 @@ public class MassicObject : MonoBehaviour
         {
             Debug.DrawRay(contact.point, contact.normal, Color.red);
         }
-        if (colision.gameObject.GetComponent<MassicObject>())
+        if (colision.gameObject.GetComponent<CelestialObject>())
         {
-            var obj = colision.gameObject.GetComponent<MassicObject>();
-            if (obj.GetSize() > size && this.size <= Size.Player)
+            var obj = colision.gameObject.GetComponent<CelestialObject>();
+            if (colision.gameObject.GetComponent<Player>()) return;
+            /*if (obj.GetSize() > size && this.size <= Size.Satelite)
             {
                 obj.AddMass(mass);
                 mass = 0f;
                 body.velocity = Vector3.zero;
                 body.freezeRotation = true;
-                //body.isKinematic = true;
+                body.isKinematic = true;
                 transform.SetParent(obj.gameObject.transform);
                 hasColid = true;
-            }
+            }*/
         }
     }
+
+    override public void UpdateVelocity(Vector3 acceleration, float timeStep)
+    {
+        Debug.DrawRay(this.Position, acceleration, Color.yellow);
+        deltaVelocity = new Vector2(acceleration.x * timeStep, acceleration.y * timeStep);
+        Debug.DrawRay(transform.position, body.velocity, Color.white);
+    }
+
+    override public void UpdatePosition(float notUsed)
+    {
+        body.velocity += deltaVelocity;
+
+    }
 }
+
+

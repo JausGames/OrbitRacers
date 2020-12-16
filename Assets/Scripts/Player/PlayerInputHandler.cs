@@ -43,7 +43,6 @@ namespace Inputs
         {
             if (controller == null) return;
             var move = context.ReadValue<Vector2>();
-            Debug.Log("Move magnitude = " + move.magnitude);
             controller.SetMove(move);
         }
         public void OnLook(CallbackContext context)

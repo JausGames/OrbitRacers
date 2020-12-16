@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] List<Player> players;
-    [SerializeField] float maxZoom = -40f;
+    [SerializeField] float maxZoom = -70f;
     [SerializeField] float minZoom = -150f;
     // Start is called before the first frame update
     void Start()
@@ -27,7 +27,8 @@ public class CameraController : MonoBehaviour
 
         if (players.Count == 1)
         {
-            var pos = players[0].transform.position + new Vector3(0f, 7f , -7f);
+            var pos = players[0].transform.position + new Vector3(0f, 0f , -70f);
+            transform.position = Vector3.Slerp(transform.position, pos, 0.04f);
             transform.position = pos;
             return;
 

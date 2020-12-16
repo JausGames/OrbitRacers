@@ -71,8 +71,8 @@ public class MainMenu : MonoBehaviour
             mapPicker.SetActive(false);
             pressStart.enabled = true;
         }
-        if (inputLocal.Count >= 2) play.interactable = true;
-        if (inputLocal.Count < 2) play.interactable = false;
+        if (inputLocal.Count >= 1) play.interactable = true;
+        if (inputLocal.Count < 1) play.interactable = false;
         for (int i = 0; i < inputLocal.Count; i++)
         {
             playerText[i].enabled = true;
