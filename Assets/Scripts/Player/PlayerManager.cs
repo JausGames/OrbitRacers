@@ -69,7 +69,7 @@ public class PlayerManager : MonoBehaviour
             //Place healthbar
             var rect = bar.GetComponent<RectTransform>();
             rect.anchoredPosition = UIPositions[i];
-        }
+        }*/
 
         List<Inputs.PlayerInputHandlerMenu> inputMenu = new List<Inputs.PlayerInputHandlerMenu>();
         inputMenu.AddRange(FindObjectsOfType<Inputs.PlayerInputHandlerMenu>());
@@ -83,7 +83,7 @@ public class PlayerManager : MonoBehaviour
         foreach (Inputs.PlayerInputHandler gameHandler in inputGame)
         {
             gameHandler.enabled = true;
-        }*/
+        }
     }
     
     public void SetCanMove()
@@ -96,6 +96,10 @@ public class PlayerManager : MonoBehaviour
             //player.combat.SetCanMove(true);
         }
 
+    }
+    public Player GetPlayerById(int id)
+    {
+        return players[id];
     }
     string UppercaseFirst(string s)
     {

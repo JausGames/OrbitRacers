@@ -28,27 +28,8 @@ public class PlayerController : MassicObject
                 (obj.GetSize() > size || obj.GetSize() == size && enableSameSizeInteract)) interactables.Add(obj);
         }
     }
-    void Start()
-    {
-    }
-    /*override protected void UpdateVelocity(List<CelestialObject> interactables)
-    {
-        var force = Vector2.zero;
-        foreach (CelestialObject obj in interactables)
-        {
-            var rbody = obj.GetBody();
-            var vect = obj.transform.position - this.transform.position;
-            var dist = vect.sqrMagnitude;
-            force += new Vector2((vect.normalized * (Universe.gravitationalConstant * (mass + obj.GetMass())) / dist).x,
-                                (vect.normalized * (Universe.gravitationalConstant * (mass + obj.GetMass())) / dist).y);
-        }
-        body.AddForce(10f * force, ForceMode2D.Impulse);
-        Debug.DrawRay(this.Position, force, Color.yellow);
-    }*/
     void FixedUpdate()
     {
-        //UpdateVelocity(interactables);
-
         var currentSpeed = body.velocity;
         if (currentSpeed.magnitude < MAX_SPEED || Vector3.Dot(currentSpeed.normalized, move.normalized) <= 0f)
         {
@@ -108,6 +89,6 @@ public class PlayerController : MassicObject
     }
     void OnCollisionEnter2D(Collision2D colision)
     {
-
+        //empty on purpose
     }
 }
