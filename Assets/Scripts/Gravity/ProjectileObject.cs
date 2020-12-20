@@ -24,7 +24,7 @@ public class ProjectileObject : MassicObject
     // Update is called once per frame
     void FixedUpdate()
     {
-       /* if (Time.time < initTime + timeBeforeConsuming && !hasColid) return;
+        if (Time.time < initTime + timeBeforeConsuming && !hasColid) return;
         timeLeft -= Time.fixedDeltaTime;
         mass = initMass * timeLeft / LIFETIME;
         var value = initScale * timeLeft / LIFETIME;
@@ -34,7 +34,7 @@ public class ProjectileObject : MassicObject
 
             nBody.RemoveObject(this);
             Destroy(this.gameObject);
-        }*/
+        }
 
     }
 

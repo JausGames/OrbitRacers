@@ -6,7 +6,7 @@ public class RaceMode : GameMode
 {
     [SerializeField] private uint maxDoor;
     [SerializeField] private uint[] playersDoor;
-    [SerializeField] private uint maxLap = 1;
+    [SerializeField] private uint maxLap = 3;
     [SerializeField] private uint[] playersLap;
     
     public void SetMaxDoor(uint max)
