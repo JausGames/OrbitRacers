@@ -44,7 +44,7 @@ public class PlayerController : MassicObject
         {
             var value = Vector3.Dot(currentSpeed.normalized, move.normalized);
             var perpValue = Vector3.Dot(Vector2.Perpendicular(currentSpeed).normalized, move.normalized);
-            body.AddForce(Vector2.Perpendicular(currentSpeed) * value * move.magnitude * speed * mass * Mathf.Sign(perpValue), ForceMode2D.Impulse);
+            body.AddForce(Vector2.Perpendicular(currentSpeed) * value * move.magnitude * speed * mass * Mathf.Sign(perpValue));
             Debug.DrawRay(transform.position, Vector2.Perpendicular(currentSpeed) * value * speed * Mathf.Sign(perpValue), Color.cyan);
         }
         Debug.DrawRay(transform.position, body.velocity, Color.white);
