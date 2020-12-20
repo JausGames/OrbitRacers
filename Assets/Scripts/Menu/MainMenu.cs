@@ -122,7 +122,9 @@ public class MainMenu : MonoBehaviour
         if (MatchManager.instance == null) Instantiate(MatchManagerPrefab);
         var map = mapHandler.GetMapByName(mapName.text);
         var spawnwPos = map.GetPositions();
-        var mode = PlayerManager.instance.gameObject.AddComponent(typeof(RaceMode)) as RaceMode;
+        var mode = MatchManager.instance.gameObject.AddComponent(typeof(RaceMode)) as RaceMode;
+        mode.SetMaxDoor((uint)(int)map.GetDoors().Length/2 - 1);
+        mode.ResetGame();
         PlayerManager.instance.SetSpawnPositions(spawnwPos);
         var list = new List<GameObject>();
         for (int i = 0; i < inputs.Count; i++)

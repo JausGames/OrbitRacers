@@ -38,7 +38,7 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.Log("Set Match Up :" + players[i]);
             //players[i].SetAlive(true);
-            players[i].StopMotion();
+            players[i].controller.StopMotion();
             players[i].transform.localPosition = positions[i];
             players[i].transform.localRotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
             players[i].controller.SetPlayerIndex(i);
@@ -46,6 +46,17 @@ public class PlayerManager : MonoBehaviour
             //players[i].combat.SetCanMove(false);
         }
         SetUIUp();
+    }
+    public void ResetMatchUp()
+    {
+        Debug.Log("PlayerManager, Reset Match Up");
+        for (int i = 0; i < players.Count; i++)
+        {
+            Debug.Log("Reset Match Up :" + players[i]);
+            players[i].controller.StopMotion();
+            players[i].controller.ClearInteractables();
+            players[i].transform.localPosition = positions[i];
+        }
     }
     public void SetUIUp()
     {/*
@@ -86,13 +97,13 @@ public class PlayerManager : MonoBehaviour
         }
     }
     
-    public void SetCanMove()
+    public void SetCanMove(bool value)
     {
         Debug.Log("PlayerManager, Set Can Move");
         foreach (Player player in players)
         {
             player.controller.SetInteractables();
-            player.controller.SetCanMove(true);
+            player.controller.SetCanMove(value);
             //player.combat.SetCanMove(true);
         }
 
@@ -100,6 +111,14 @@ public class PlayerManager : MonoBehaviour
     public Player GetPlayerById(int id)
     {
         return players[id];
+    }
+    public int GetPlayerId(Player player)
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (player == players[i]) return i;
+        }
+        return -1;
     }
     string UppercaseFirst(string s)
     {

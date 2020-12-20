@@ -134,6 +134,7 @@ MonoBehaviour:
   controller: {fileID: 0}
   body: {fileID: 0}
   image: {fileID: 21300000, guid: ee0541a9bbd889746ab51ca1f1938676, type: 3}
+  name: Blue
 --- !u!114 &609416719571560884
 MonoBehaviour:
   m_ObjectHideFlags: 0

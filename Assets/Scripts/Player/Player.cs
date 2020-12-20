@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
     //[SerializeField] public PlayerCombat combat = null;
     [SerializeField] public Rigidbody body;
     [SerializeField] Sprite image;
+    [SerializeField] string name;
     // Start is called before the first frame update
     void Awake()
     {
@@ -24,6 +25,10 @@ public class Player : MonoBehaviour
     public Sprite GetPicture()
     {
         return image;
+    }
+    public string GetName()
+    {
+        return name;
     }
 
     /*public bool GetAlive()

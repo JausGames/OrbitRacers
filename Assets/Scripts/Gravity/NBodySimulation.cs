@@ -4,31 +4,38 @@ using UnityEngine;
 
 public class NBodySimulation : MonoBehaviour
 {
-    CelestialObject[] bodies;
+    [SerializeField] List<CelestialObject> bodies = new List<CelestialObject>();
     static NBodySimulation instance;
 
     void Awake()
     {
 
-        bodies = FindObjectsOfType<CelestialObject>();
+        bodies.AddRange(FindObjectsOfType<CelestialObject>());
         Time.fixedDeltaTime = Universe.physicsTimeStep;
         Debug.Log("Setting fixedDeltaTime to: " + Universe.physicsTimeStep);
     }
 
     void FixedUpdate()
     {
-        for (int i = 0; i < bodies.Length; i++)
+        for (int i = 0; i < bodies.Count; i++)
         {
             Vector3 acceleration = CalculateAcceleration(bodies[i].Position, bodies[i].GetInteractables());
             bodies[i].UpdateVelocity(acceleration, Universe.physicsTimeStep);
-            //bodies[i].UpdateVelocity (bodies[i].GetInteractables(), Universe.physicsTimeStep);
         }
 
-        for (int i = 0; i < bodies.Length; i++)
+        for (int i = 0; i < bodies.Count; i++)
         {
             bodies[i].UpdatePosition(Universe.physicsTimeStep);
         }
 
+    }
+    public void AddObject(CelestialObject obj)
+    {
+        bodies.Add(obj);
+    }
+    public void RemoveObject(CelestialObject obj)
+    {
+        bodies.Remove(obj);
     }
 
     public static Vector3 CalculateAcceleration(Vector3 point, List<CelestialObject> bodies)
@@ -51,7 +58,7 @@ public class NBodySimulation : MonoBehaviour
         return acceleration;
     }
 
-    public static CelestialObject[] Bodies
+    public static List<CelestialObject> Bodies
     {
         get
         {

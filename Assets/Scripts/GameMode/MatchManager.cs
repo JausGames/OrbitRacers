@@ -42,22 +42,16 @@ public class MatchManager : MonoBehaviour
             input.FindPlayer();
         }
     }
-    
-    // Update is called once per frame
-    void Update()
-    {
-        if (playerManager.alive.Count == 1 && !playAgain.playAgain) playAgainUI.SetActive(true);
-    }
 
     public void StartGame()
     {
         timerUI.SetActive(false);
-        playerManager.SetCanMove();
+        playerManager.SetCanMove(true);
     }
     public void ResetGame()
     {
         playAgain.playAgain = false;
-        playerManager.SetMatchUp();
+        playerManager.ResetMatchUp();
         timerUI.SetActive(true);
     }
     public void SetPlayers(List<GameObject> players)
@@ -68,6 +62,12 @@ public class MatchManager : MonoBehaviour
     public void DeletePlayers()
     {
         PlayerManager.instance.DeletePlayers();
+    }
+    public void PlayerWin(Player player)
+    {
+        playAgain.SetWinnerName(player.GetName());
+        playAgainUI.SetActive(true);
+        GetComponent<GameMode>().ResetGame();
     }
 
 

@@ -9,6 +9,7 @@ public class PlayAgain : MonoBehaviour
 	public Button no;
 	public Button yes;
 	public bool playAgain = false;
+	[SerializeField] private Text winnerName;
 
 	void Start()
 	{
@@ -40,5 +41,9 @@ public class PlayAgain : MonoBehaviour
 		Debug.Log("REMATCH");
 		gameObject.SetActive(false);
 		MatchManager.instance.ResetGame();
+	}
+	public void SetWinnerName(string name)
+	{
+		winnerName.text = name + " !";
 	}
 }

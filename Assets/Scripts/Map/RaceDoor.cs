@@ -11,7 +11,7 @@ public class RaceDoor : MonoBehaviour
     [SerializeField] bool passingBy = false;
     [SerializeField] bool check = false;
     [SerializeField] float checkTime = 0f;
-    [SerializeField] float CHECKTIME = 0.2f;
+    [SerializeField] float CHECKTIME = 0.1f;
     [SerializeField] private LayerMask layer;
     [SerializeField] private RaceMode raceManager;
 
@@ -45,21 +45,26 @@ public class RaceDoor : MonoBehaviour
         if (Time.time > checkTime)
         {
             check = true;
+        }
+        else if (Time.time - checkTime > -0.08f)
+        {
+            check = false;
+        }
+        if (check)
+        {
             Debug.Log("RaceDoor, FixedUpdate");
             var col = Physics2D.OverlapAreaAll(position[0] - normal, position[1] + normal, layer);
             Debug.Log("RaceDoor, FixedUpdate : col.Length = " + col.Length);
-            foreach (var hitCollider in col)
+            foreach (var hit in col)
             {
+                var player = hit.GetComponent<Player>();
+                raceManager.PlayerPassingDoor(number, player);
                 passingBy = true;
                 //hitCollider.SendMessage("RaceDoor, FixedUpdate : Player Touched = " + hitCollider.gameObject);
             }
             if (col.Length > 0) { passingBy = true; }
             else { passingBy = false; }
             checkTime = Time.time + CHECKTIME;
-        }
-        else if (Time.time - checkTime > -0.08f)
-        {
-            check = false;
         }
     }
 

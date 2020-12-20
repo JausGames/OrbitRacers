@@ -28,6 +28,10 @@ public class PlayerController : MassicObject
                 (obj.GetSize() > size || obj.GetSize() == size && enableSameSizeInteract)) interactables.Add(obj);
         }
     }
+    public void StopMotion()
+    {
+        body.velocity = Vector2.zero;
+    }
     void FixedUpdate()
     {
         var currentSpeed = body.velocity;
@@ -40,7 +44,7 @@ public class PlayerController : MassicObject
         {
             var value = Vector3.Dot(currentSpeed.normalized, move.normalized);
             var perpValue = Vector3.Dot(Vector2.Perpendicular(currentSpeed).normalized, move.normalized);
-            body.AddForce(Vector2.Perpendicular(currentSpeed) * value * move.magnitude * speed * mass * Mathf.Sign(perpValue));
+            body.AddForce(Vector2.Perpendicular(currentSpeed) * value * move.magnitude * speed * mass * Mathf.Sign(perpValue), ForceMode2D.Impulse);
             Debug.DrawRay(transform.position, Vector2.Perpendicular(currentSpeed) * value * speed * Mathf.Sign(perpValue), Color.cyan);
         }
         Debug.DrawRay(transform.position, body.velocity, Color.white);
@@ -55,6 +59,11 @@ public class PlayerController : MassicObject
         {
             if (obj.gameObject != this.gameObject && obj.GetSize() >= size) interactables.Add(obj);
         }
+        body.isKinematic = true;
+    }
+    public void ClearInteractables()
+    {
+        interactables.Clear();
         body.isKinematic = true;
     }
 
