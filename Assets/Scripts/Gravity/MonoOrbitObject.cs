@@ -12,6 +12,6 @@ public class MonoOrbitObject : PresetOrbitObject
         SetMass();
         body.mass = mass;
         interactables.Add(parent);
-        
+        SetSpriteColor();
     }
 }

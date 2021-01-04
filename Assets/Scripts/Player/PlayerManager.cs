@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject healtbar;
     public List<Player> players;
     public List<Player> alive;
-    public Material[] materials;
+    public Color[] colors;
     Vector3[] positions;
 
     Vector3[] UIPositions = new Vector3[] 
@@ -41,6 +41,9 @@ public class PlayerManager : MonoBehaviour
             players[i].controller.StopMotion();
             players[i].transform.localPosition = positions[i];
             players[i].transform.localRotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+            players[i].controller.SetColor(colors[i]);
+            players[i].controller.SetSpriteColor();
+
             players[i].controller.SetPlayerIndex(i);
             //players[i].controller.SetCanMove(false);
             //players[i].combat.SetCanMove(false);
@@ -53,9 +56,9 @@ public class PlayerManager : MonoBehaviour
         for (int i = 0; i < players.Count; i++)
         {
             Debug.Log("Reset Match Up :" + players[i]);
-            players[i].controller.StopMotion();
-            players[i].controller.ClearInteractables();
             players[i].transform.localPosition = positions[i];
+            players[i].StopMotion();
+            players[i].controller.ClearInteractables();
         }
     }
     public void SetUIUp()
@@ -134,6 +137,10 @@ public class PlayerManager : MonoBehaviour
     {
         Debug.Log("PlayerManager, SetSpawnPositions : PositionsLength = " + pos.Length );
         positions = pos;
+    }
+    public void SetColors(Color[] colors)
+    {
+        this.colors = colors;
     }
     public void SpawnPlayers(List<GameObject> pls)
     {

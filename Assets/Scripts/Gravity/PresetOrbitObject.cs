@@ -11,5 +11,6 @@ public class PresetOrbitObject : GravitationObject
         radius = transform.localScale.x * 10;
         SetMass();
         body.mass = mass;
+        SetSpriteColor();
     }
 }

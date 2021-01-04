@@ -14,10 +14,12 @@ public class Player : MonoBehaviour
     [SerializeField] public Rigidbody body;
     [SerializeField] Sprite image;
     [SerializeField] string name;
+    TrailRenderer trail;
     // Start is called before the first frame update
     void Awake()
     {
         //visual = transform.Find("Visual");
+        trail = GetComponentInChildren<TrailRenderer>();
         controller = GetComponent<PlayerController>();
         //combat = GetComponent<PlayerCombat>();
         body = GetComponent<Rigidbody>();
@@ -52,7 +54,8 @@ public class Player : MonoBehaviour
     }
     public void StopMotion()
     {
-        //controller.StopMotion();
+        controller.StopMotion();
+        trail.Clear();
         //controller.SetFreeze(true);
     }
 

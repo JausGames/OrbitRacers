@@ -24,7 +24,6 @@ public class MatchManager : MonoBehaviour
         timerUI = canvas.transform.Find("Timer").gameObject;
         playAgainUI = canvas.transform.Find("PlayAgain").gameObject;
         playAgain = playAgainUI.GetComponent<PlayAgain>();
-        Debug.Log("caca");
     }
 
     #endregion

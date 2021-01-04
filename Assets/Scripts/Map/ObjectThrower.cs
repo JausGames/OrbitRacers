@@ -34,7 +34,9 @@ public class ObjectThrower : MapObject
     void ThrowObject()
     {
         var obj = Instantiate(projectile, startPosition, Quaternion.identity, transform);
+
         obj.GetComponent<Rigidbody2D>().AddForce(direction * force * obj.GetComponent<CelestialObject>().GetMass(), ForceMode2D.Impulse);
-        Debug.Log("ObjectThrower, ThroObject : Obejct = " + obj.GetComponent<CelestialObject>());
+        
+        Debug.Log("ObjectThrower, ThroObject : Object = " + obj.GetComponent<CelestialObject>());
     }
 }
