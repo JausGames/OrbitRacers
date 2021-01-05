@@ -74,6 +74,10 @@ public class CelestialObject : MonoBehaviour
     {
         this.color = color;
     }
+    public Color GetColor()
+    {
+        return color;
+    }
     public float GetRadius()
     {
         return radius;

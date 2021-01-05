@@ -64,7 +64,7 @@ public class MatchManager : MonoBehaviour
     }
     public void PlayerWin(Player player)
     {
-        playAgain.SetWinnerName(player.GetName());
+        playAgain.SetWinnerName(player.GetName(), player.controller.GetColor());
         playAgainUI.SetActive(true);
         GetComponent<GameMode>().ResetGame();
     }

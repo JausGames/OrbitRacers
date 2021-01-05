@@ -129,12 +129,13 @@ public class MainMenu : MonoBehaviour
     }
     private void ChangePlayerColor(int playerNb, float value)
     {
-        colors[playerNb] = Color.HSVToRGB(value, 1f, 0.5f);
+        colors[playerNb] = Color.HSVToRGB(value, 1f, 1f);
         ActualizeColor(playerNb);
     }
     private void ActualizeColor(int playerNb)
     {
         playerPicture[playerNb].sprite = SpriteMaker.GetInstance().ColorSaturateSprite(playerPicture[playerNb].sprite, colors[playerNb], FilterMode.Bilinear);
+        playerColor[playerNb].GetComponentInChildren<Image>().color = colors[playerNb];
     }
 
     private void ChangeScene()

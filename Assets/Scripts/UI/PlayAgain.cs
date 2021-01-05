@@ -42,8 +42,9 @@ public class PlayAgain : MonoBehaviour
 		gameObject.SetActive(false);
 		MatchManager.instance.ResetGame();
 	}
-	public void SetWinnerName(string name)
+	public void SetWinnerName(string name, Color color)
 	{
 		winnerName.text = name + " !";
+		winnerName.color = color;
 	}
 }
