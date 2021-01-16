@@ -33,6 +33,9 @@ public class CelestialObject : MonoBehaviour
                 (obj.GetSize() > size || obj.GetSize() == size && enableSameSizeInteract)) interactables.Add(obj);
         }
         SetSpriteColor();
+        /*GameObject gf = new GameObject("GravityField");
+        gf.transform.SetParent(transform);*/
+        gameObject.AddComponent<TestRadius>();
     }
     public void SetSpriteColor()
     {
@@ -69,6 +72,7 @@ public class CelestialObject : MonoBehaviour
         );
         trail.colorGradient = gradient;
     }
+    
 
     public void SetColor(Color color)
     {
@@ -81,6 +85,10 @@ public class CelestialObject : MonoBehaviour
     public float GetRadius()
     {
         return radius;
+    }
+    public void SetRadius()
+    {
+        radius = transform.localScale.x * 10;
     }
     public float GetMass()
     {
@@ -98,7 +106,35 @@ public class CelestialObject : MonoBehaviour
     {
         return size;
     }
-    public List<CelestialObject> GetInteractables()
+    public void SetSize(Size size)
+    {
+        this.size = size;
+        interactables.Clear();
+
+        var interacts = FindObjectsOfType<CelestialObject>();
+        foreach (CelestialObject obj in interacts)
+        {
+            var i = 0f;
+            Debug.Log("Check : " + i);
+            if (obj.gameObject != this.gameObject &&
+                (obj.GetSize() > size || obj.GetSize() == size && enableSameSizeInteract)) interactables.Add(obj);
+            i++;
+        }
+
+    }
+    public bool IsInteractablePresent(CelestialObject celObject)
+    {
+        foreach(CelestialObject obj in interactables)
+        {
+            if (celObject == obj) return true;
+        }
+        return false;
+    }
+    public void SetInteractables(List<CelestialObject> list)
+    {
+        interactables = list;
+    }
+    virtual public List<CelestialObject> GetInteractables()
     {
         return interactables;
     }
@@ -123,5 +159,15 @@ public class CelestialObject : MonoBehaviour
     public void SetMass()
     {
         mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
+    }
+    public float GetGravity()
+    {
+        return surfaceGravity;
+    }
+    public void SetGravity(float value)
+    {
+        surfaceGravity = value;
+        SetMass();
+        body.mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
     }
 }

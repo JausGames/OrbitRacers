@@ -113,7 +113,12 @@ public class PlayerManager : MonoBehaviour
     }
     public Player GetPlayerById(int id)
     {
-        return players[id];
+        if (id < players.Count) return players[id];
+        return null;
+    }
+    public List<Player> GetPlayers()
+    {
+        return players;
     }
     public int GetPlayerId(Player player)
     {

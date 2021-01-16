@@ -10,6 +10,7 @@ public class MatchManager : MonoBehaviour
     [SerializeField] GameObject timerUI = null;
     [SerializeField] PlayAgain playAgain = null;
     [SerializeField] int nbPlayers = 0;
+    [SerializeField] ParticleSystem fireworks;
 
     #region Singleton
     public static MatchManager instance;
@@ -41,17 +42,27 @@ public class MatchManager : MonoBehaviour
             input.FindPlayer();
         }
     }
+    public ParticleSystem GetFireworks()
+    {
+        return fireworks;
+    }
 
     public void StartGame()
     {
         timerUI.SetActive(false);
         playerManager.SetCanMove(true);
+        GetComponent<GameMode>().StartGame();
     }
     public void ResetGame()
     {
         playAgain.playAgain = false;
         playerManager.ResetMatchUp();
         timerUI.SetActive(true);
+        if (GetComponent<SoccerMode>())
+        {
+            GetComponent<SoccerMode>().ResetBallPosition();
+            GetComponent<SoccerMode>().DisplayUI(true);
+        }
     }
     public void SetPlayers(List<GameObject> players)
     {
@@ -67,6 +78,14 @@ public class MatchManager : MonoBehaviour
         playAgain.SetWinnerName(player.GetName(), player.controller.GetColor());
         playAgainUI.SetActive(true);
         GetComponent<GameMode>().ResetGame();
+        GetComponent<GameMode>().PlayFireworks(fireworks);
+    }
+    public void TeamWin(string teamName, Color teamColor)
+    {
+        playAgain.SetWinnerName(teamName, teamColor);
+        playAgainUI.SetActive(true);
+        GetComponent<GameMode>().ResetGame();
+        GetComponent<GameMode>().PlayFireworks(fireworks);
     }
 
 

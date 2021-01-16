@@ -5,14 +5,17 @@ using UnityEngine;
 abstract public class Map : MonoBehaviour
 {
     [SerializeField] protected Vector3[] spawnPos = new Vector3[4];
-    [SerializeField] protected Vector2[] doorPos;
-    [SerializeField] protected List<RaceDoor> doors = new List<RaceDoor>();
     [SerializeField] protected string mapName = "";
-
+    [SerializeField] protected List<string> allowedMode;
+    [SerializeField] protected Sprite picture;
 
     virtual public Vector3[] GetPositions()
     {
         Debug.Log("Map, GetPositions : PositionsLength = " + spawnPos.Length);
+        Debug.Log("Map, GetPositions : Position[0] = " + spawnPos[0]);
+        Debug.Log("Map, GetPositions : Position[1] = " + spawnPos[1]);
+        Debug.Log("Map, GetPositions : Position[2] = " + spawnPos[2]);
+        Debug.Log("Map, GetPositions : Position[3] = " + spawnPos[3]);
         return spawnPos;
     }
 
@@ -21,22 +24,19 @@ abstract public class Map : MonoBehaviour
         Debug.Log("Map, GetName : MapName = " + mapName);
         return mapName;
     }
-
-    virtual public Vector2[] GetDoors()
+    public bool FindInModes(string name)
     {
-        return doorPos;
-    }
-    virtual protected void CreateDoors()
-    {
-        for(int i = 0; i < doorPos.Length / 2; i++)
+        foreach (string mode in allowedMode)
         {
-            var door = gameObject.AddComponent(typeof(RaceDoor)) as RaceDoor;
-            door.SetPosition(doorPos[2*i], doorPos[2*i + 1]);
-            door.SetNumber((uint) (int) i);
-            door.SetMaxNumber((uint) (int) doorPos.Length / 2);
-            doors.Add(door);
+            if (mode == name) return true;
         }
+        return false;
     }
+    public Sprite GetPicture()
+    {
+        return picture;
+    }
+
 
 }
 

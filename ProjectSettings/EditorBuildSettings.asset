@@ -9,12 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: bf636a591b48c3e4887f1bb368ef5a30
   - enabled: 1
-    path: Assets/Scenes/Map01Scene.unity
+    path: Assets/Scenes/RaceMap01Scene.unity
     guid: 2feb948229b273541bb43a269b953824
   - enabled: 1
-    path: Assets/Scenes/Map02Scene.unity
+    path: Assets/Scenes/RaceMap02Scene.unity
     guid: c36983f0e25fbe746bdc9fac6235b13e
   - enabled: 1
-    path: Assets/Scenes/Map03Scene.unity
+    path: Assets/Scenes/RaceMap03Scene.unity
     guid: 8fffd83aee81cb745a0006887d86acf6
+  - enabled: 1
+    path: Assets/Scenes/StadiumScene.unity
+    guid: c43e3b57ad14dae44987b335ad3bba2d
   m_configObjects: {}

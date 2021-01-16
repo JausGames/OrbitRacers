@@ -101,6 +101,7 @@ public class SpriteMaker
     }
     public Sprite ColorSaturateSprite(Sprite sprite, Color color, FilterMode mode)
     {
+        if (sprite == null) return Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 4, 4), Vector2.one * 0.5f); ;
         var importedTexture = sprite.texture;
         var width = importedTexture.width;
         var height = importedTexture.height;

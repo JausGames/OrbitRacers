@@ -13,6 +13,10 @@ namespace HSVPicker
         public Slider.Direction direction;
 
         private RawImage image;
+        [SerializeField] private bool onSaturation;
+        [SerializeField] private bool onLights;
+        [SerializeField] private double saturation;
+        [SerializeField] private double lights;
 
         private RectTransform rectTransform
         {
@@ -52,7 +56,12 @@ namespace HSVPicker
 
                     for (int i = 0; i < size; i++)
                     {
-                        colors[inverted ? size - 1 - i : i] = ConvertHsvToRgb(i, 1, 1, 1);
+                        double s = 1;
+                        double v = 1;
+                        if (onSaturation) s = saturation;
+                        if (onLights) v = lights;
+                        colors[inverted ? size - 1 - i : i] = ConvertHsvToRgb(i, s, v, 1);
+                        
                     }
 
 

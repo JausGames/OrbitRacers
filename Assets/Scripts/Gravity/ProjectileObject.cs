@@ -10,8 +10,8 @@ public class ProjectileObject : MassicObject
     private float initTrailSize;
     private float initTrailTime;
     private float timeBeforeConsuming = 3f;
-    private float LIFETIME = 5f;
-    private float timeLeft = 5f;
+    private float LIFETIME = 3f;
+    private float timeLeft = 3f;
     [SerializeField] private NBodySimulation nBody;
     private TrailRenderer trail;
     // Start is called before the first frame update
@@ -37,12 +37,19 @@ public class ProjectileObject : MassicObject
         trail.startWidth = initTrailSize * timeLeft / LIFETIME;
         trail.time = initTrailTime * timeLeft / LIFETIME;
         var value = initScale * timeLeft / LIFETIME;
-        transform.localScale = new Vector3(value, value, 0f);
-        if (timeLeft < 0 )
+        if (timeLeft > 1.5f)
         {
-
-            nBody.RemoveObject(this);
-            Destroy(this.gameObject);
+            transform.localScale = new Vector3(value, value, 0f);
+        }
+        else
+        {
+            value = value * timeLeft / 1.5f;
+            transform.localScale = new Vector3(value, value, 0f);
+            if (transform.localScale.x < 0.01f)
+            {
+                nBody.RemoveObject(this);
+                Destroy(this.gameObject);
+            }
         }
 
     }

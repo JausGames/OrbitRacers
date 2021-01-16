@@ -34,6 +34,9 @@ public class PlayAgain : MonoBehaviour
 		{
 			menuHandler.enabled = true;
 		}
+		var menu = FindObjectOfType<MainMenu>();
+		menu.ChangeMenu(1);
+		menu.enabled = true;
 		SceneManager.LoadScene("MainMenu");
 	}
 	void Rematch()
