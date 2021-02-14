@@ -57,6 +57,7 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.Log("Reset Match Up :" + players[i]);
             players[i].transform.localPosition = positions[i];
+            players[i].SetCanMove(false);
             players[i].StopMotion();
             players[i].controller.ClearInteractables();
         }
@@ -106,7 +107,7 @@ public class PlayerManager : MonoBehaviour
         foreach (Player player in players)
         {
             player.controller.SetInteractables();
-            player.controller.SetCanMove(value);
+            player.SetCanMove(value);
             //player.combat.SetCanMove(true);
         }
 

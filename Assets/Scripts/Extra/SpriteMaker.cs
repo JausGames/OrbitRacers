@@ -128,7 +128,7 @@ public class SpriteMaker
                     var v = 0f;
                     Color.RGBToHSV(currColor, out h, out sCurr, out vCurr);
                     Color.RGBToHSV(color, out h, out s, out v);
-                    var outputColor = Color.HSVToRGB(h, sCurr, vCurr);
+                    var outputColor = Color.HSVToRGB(h , sCurr, vCurr);
                     newTexture.SetPixel(x, y, outputColor);
                 }
                 else newTexture.SetPixel(x, y, new Color(0f, 0f, 0f, 0f));
@@ -144,7 +144,59 @@ public class SpriteMaker
 
     }
 
-    public Texture2D ColorSaturateTexture(Sprite sprite, Color color, FilterMode mode)
+    public Sprite ColorSaturateSprite(Sprite sprite, Color color, Color baseColor, FilterMode mode)
+    {
+        if (sprite == null) return Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 4, 4), Vector2.one * 0.5f); ;
+        var importedTexture = sprite.texture;
+        var width = importedTexture.width;
+        var height = importedTexture.height;
+        var hbase = 0f;
+        var sbase = 0f;
+        var vbase = 0f;
+        Color.RGBToHSV(baseColor, out hbase, out sbase, out vbase);
+        Debug.Log("Color Color : h = "  +  hbase);
+
+        byte[] textureTmp = importedTexture.GetRawTextureData();
+
+
+        Texture2D oldTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        Texture2D newTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+
+        oldTexture.LoadRawTextureData(textureTmp);
+        for (int x = 0; x < newTexture.width; x++)
+        {
+            for (int y = 0; y < newTexture.height; y++)
+            {
+                var currColor = oldTexture.GetPixel(x, y);
+                if (currColor.a == 1f)
+                {
+                    var h = 0f;
+                    var sCurr = 0f;
+                    var vCurr = 0f;
+                    var s = 0f;
+                    var v = 0f;
+                    Color.RGBToHSV(currColor, out h, out sCurr, out vCurr);
+                    var variance = hbase - h;
+                    Color.RGBToHSV(color, out h, out s, out v);
+                    var nb = (h + variance) % 1f;
+                    if (nb < 0) nb = 1f + nb;
+                    var outputColor = Color.HSVToRGB(nb, sCurr, vCurr);
+                    newTexture.SetPixel(x, y, outputColor);
+                }
+                else newTexture.SetPixel(x, y, new Color(0f, 0f, 0f, 0f));
+
+            }
+        }
+
+        newTexture.filterMode = mode;
+        newTexture.Apply();
+
+        Sprite newSprite = Sprite.Create(newTexture, sprite.rect, Vector2.one * 0.5f, sprite.pixelsPerUnit);
+        return newSprite;
+
+    }
+
+    public Texture2D ColorSaturateTexture(Sprite sprite, Color color, Color baseColor, FilterMode mode)
     {
         var importedTexture = sprite.texture;
         var width = importedTexture.width;

@@ -212,8 +212,8 @@ public class SoccerMode : GameMode
             var sprite = p0Jersey.GetComponent<SpriteRenderer>();
             sprite.sprite = Resources.Load<Sprite>("Sprites/jersey") as Sprite;
             if (teamArray[0] == 1) sprite.color = new Color(teamColors[0].r, teamColors[0].g, teamColors[0].b, 0.7f);
-            else new Color(teamColors[1].r, teamColors[1].g, teamColors[1].b, 0.7f);
-            sprite.sortingOrder = 1;
+            else sprite.color = new Color(teamColors[1].r, teamColors[1].g, teamColors[1].b, 0.7f);
+            sprite.sortingOrder = 2;
 
             if (p1 == null) return;
 
@@ -223,8 +223,8 @@ public class SoccerMode : GameMode
             sprite = p1Jersey.GetComponent<SpriteRenderer>();
             sprite.sprite = Resources.Load<Sprite>("Sprites/jersey") as Sprite;
             if (teamArray[1] == 1) sprite.color = new Color(teamColors[0].r, teamColors[0].g, teamColors[0].b, 0.7f);
-            else new Color(teamColors[1].r, teamColors[1].g, teamColors[1].b, 0.7f);
-            sprite.sortingOrder = 1;
+            else sprite.color = new Color(teamColors[1].r, teamColors[1].g, teamColors[1].b, 0.7f);
+            sprite.sortingOrder = 2;
 
             if (p2 == null) return;
 
@@ -234,8 +234,8 @@ public class SoccerMode : GameMode
             sprite = p2Jersey.GetComponent<SpriteRenderer>();
             sprite.sprite = Resources.Load<Sprite>("Sprites/jersey") as Sprite;
             if (teamArray[2] == 1) sprite.color = new Color(teamColors[0].r, teamColors[0].g, teamColors[0].b, 0.7f);
-            else new Color(teamColors[1].r, teamColors[1].g, teamColors[1].b, 0.7f);
-            sprite.sortingOrder = 1;
+            else sprite.color = new Color(teamColors[1].r, teamColors[1].g, teamColors[1].b, 0.7f);
+            sprite.sortingOrder = 2;
 
             if (p3 == null) return;
 
@@ -245,8 +245,8 @@ public class SoccerMode : GameMode
             sprite = p3Jersey.GetComponent<SpriteRenderer>();
             sprite.sprite = Resources.Load<Sprite>("Sprites/jersey") as Sprite;
             if (teamArray[3] == 1) sprite.color = new Color(teamColors[0].r, teamColors[0].g, teamColors[0].b, 0.7f);
-            else new Color(teamColors[1].r, teamColors[1].g, teamColors[1].b, 0.7f);
-            sprite.sortingOrder = 1;
+            else sprite.color = new Color(teamColors[1].r, teamColors[1].g, teamColors[1].b, 0.7f);
+            sprite.sortingOrder = 2;
         }
         else
         {
@@ -271,6 +271,7 @@ public class SoccerMode : GameMode
         Debug.Log("SoccerMode, ResetGame");
         leftTeamScore = 0;
         rightTeamScore = 0;
+        overTime = false;
         UpdateScore();
         timeLeft = gameTime;
         if (texts.Count != 0) texts[0].text = Mathf.CeilToInt(timeLeft).ToString();
@@ -361,5 +362,10 @@ public class SoccerMode : GameMode
     {
         particle.transform.position = ball.transform.position;
         base.PlayFireworks(particle);
+    }
+    public void SetGameTime(float time)
+    {
+        gameTime = time;
+        timeLeft = gameTime;
     }
 }

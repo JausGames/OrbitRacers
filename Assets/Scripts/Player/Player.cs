@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] public Rigidbody body;
     [SerializeField] Sprite image;
     [SerializeField] string name;
+    [SerializeField] Color baseColor;
     TrailRenderer trail;
     // Start is called before the first frame update
     void Awake()
@@ -33,6 +34,10 @@ public class Player : MonoBehaviour
         return name;
     }
 
+    public Color GetBaseColor()
+    {
+        return baseColor;
+    }
     /*public bool GetAlive()
     {
         return isAlive;
@@ -44,7 +49,7 @@ public class Player : MonoBehaviour
     public void SetCanMove(bool value)
     {
         //combat.SetCanMove(value);
-        //controller.SetCanMove(value);
+        controller.SetCanMove(value);
     }
     public void SetPlayerIndex(int value)
     {

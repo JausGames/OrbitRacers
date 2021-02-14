@@ -14,10 +14,10 @@ public class Soccer01 : SoccerMap
                                     };
         goals = new Vector2[]
         {
-            new Vector2(-78f, 12f),
-            new Vector2(-78f, -10.5f),
-            new Vector2(73.5f, 12f),
-            new Vector2(73.5f, -10.5f)
+            new Vector2(-75f, 12f),
+            new Vector2(-75f, -12f),
+            new Vector2(74f, 12f),
+            new Vector2(74f, -12f)
         };
 
         normal = new Vector2[]

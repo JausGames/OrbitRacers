@@ -8,40 +8,56 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    [Header("Infos")]
     [SerializeField] private int nbPlayers;
-    private bool inTeam = true;
     [SerializeField] private List<Inputs.PlayerInputHandlerMenu> inputs = new List<Inputs.PlayerInputHandlerMenu>();
     [SerializeField] GameObject MatchManagerPrefab;
     [SerializeField] List<GameObject> playerTypes = new List<GameObject>();
-    [SerializeField] List<GameObject> menus = new List<GameObject>();
-    [SerializeField] MapHandler mapHandler;
-    [SerializeField] private Text UICount;
-    [SerializeField] private Text pressStart;
-    [SerializeField] private Button next;
-    [SerializeField] private Button play;
-    [SerializeField] private Button back;
-    [SerializeField] private Button quit;
-    [SerializeField] private GameObject mapPicker;
-    [SerializeField] private Text mapName;
+    [Header("Menus")]
     [SerializeField] private Text title;
-    [SerializeField] private Button nextMap;
-    [SerializeField] private Button previousMap;
-    [SerializeField] private GameObject modePicker;
-    [SerializeField] private Text gameModeName;
-    [SerializeField] private Button nextMode;
-    [SerializeField] private Button previousMode;
-    [SerializeField] private Image mapPicture;
-    [SerializeField] private List<Image> playerCircle = new List<Image>();
+    [SerializeField] private Text pressStart;
+    [SerializeField] List<GameObject> menus = new List<GameObject>();
+    [Header("Menus - Player")]
+    [SerializeField] private List<Button> PlayerSelect = new List<Button>();
     [SerializeField] private List<Text> playerText = new List<Text>();
-    [SerializeField] private List<Image> playerPicture = new List<Image>();
+    [SerializeField] private Button next;
+    [SerializeField] private Button quit;
+    [Header("Menus - Player - Color")]
     [SerializeField] private List<Slider> playerColor = new List<Slider>();
     [SerializeField] private Color[] colors;
+    [SerializeField] private List<Image> playerPicture = new List<Image>();
+
+    [Header("Settings")]
+    [SerializeField] private Button play;
+    [SerializeField] private Button back;
+    [Header("Settings - Map")]
+    [SerializeField] MapHandler mapHandler;
+    [SerializeField] private GameObject mapPicker;
+    [SerializeField] private Text mapName;
+    [SerializeField] private Image mapPicture;
+    [SerializeField] private Button previousMap;
+    [SerializeField] private Button nextMap;
+    [Header("Settings - Mode")]
+    [SerializeField] private GameObject modePicker;
+    [SerializeField] private Text gameModeName;
+    [SerializeField] private Button previousMode;
+    [SerializeField] private Button nextMode;
+
+
+    [Header("Submenus")]
+    [SerializeField] List<GameObject> submenus = new List<GameObject>();
+    [Header("Submenus - Time")]
+    [SerializeField] private float gameTime;
+    [SerializeField] private Text gameTimeLabel;
+    [SerializeField] private Slider timeSlider;
+
+    [Header("Submenus - Team")]
+    [SerializeField] private bool inTeam = true;
     [SerializeField] private GameObject teamSubMenu;
-    private Color[] teamColors = new Color[] { new Color(0.5f, 0.5f, 1f, 1f), new Color(1f, 0.5f, 0.5f, 1f) };
-    int[,] teamPlayer = new int[,] { { 1, 1 }, { 1, 2 }, { 2, 1 }, { 2, 2 } };
+    [SerializeField] private Color[] teamColors = new Color[] { new Color(0.5f, 0.5f, 1f, 1f), new Color(1f, 0.5f, 0.5f, 1f) };
+    [SerializeField] int[,] teamPlayer = new int[,] { { 1, 1 }, { 1, 2 }, { 2, 1 }, { 2, 2 } };
     [SerializeField] private Button playInTeam;
-    [SerializeField] private int[] numTeam = new int[] { 1, 1, 2, 2 };
-    [SerializeField] private List<Button> PlayerSelect = new List<Button>();
+    [SerializeField] private int[] numTeam = new int[] { 1, 2, 1, 2 };
     [SerializeField] private List<Button> TeamPicker = new List<Button>();
     [SerializeField] private List<InputField> TeamName = new List<InputField>();
     [SerializeField] private List<Slider> teamColorSliders = new List<Slider>();
@@ -49,6 +65,12 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
+        SetColorToSlider(timeSlider, Color.HSVToRGB(0.54f, 0.16f, 0.82f));
+        var buttons = FindObjectsOfType<Button>();
+        foreach (Button but in buttons)
+        {
+            SetColorToBtn(but, Color.HSVToRGB(0.54f, 0.16f, 0.82f));
+        }
         PlayInTeam();
         for(int nbButton = 0; nbButton < TeamPicker.Count; nbButton++)
         {
@@ -105,6 +127,9 @@ public class MainMenu : MonoBehaviour
         TeamPicker[2].onClick.AddListener(delegate { SwithTeam(2); });
         TeamPicker[3].onClick.AddListener(delegate { SwithTeam(3); });
 
+
+        timeSlider.onValueChanged.AddListener(delegate { ChangeGameTime(timeSlider.value); });
+
         ChangePlayerColor(0, 0f);
         ChangePlayerColor(1, 0.25f);
         ChangePlayerColor(2, 0.5f);
@@ -112,11 +137,38 @@ public class MainMenu : MonoBehaviour
 
         ChangeTeamColor(0, 0f);
         ChangeTeamColor(1, 0.6667f);
+
+        SwithTeam(1);
+        SwithTeam(1);
+    }
+
+    private void ChangeGameTime(float value)
+    {
+        gameTimeLabel.text = value.ToString() + " minutes";
+        gameTime = value;
     }
 
     private void PlayInTeam()
     {
         inTeam = !inTeam;
+        DisplayTeamButton(inTeam);
+        var color = playInTeam.colors.normalColor;
+        if (inTeam)
+        {
+            playInTeam.GetComponentInChildren<Text>().text = "Yes";
+
+            color = Color.HSVToRGB(0.3f, 0.5f, 1f);
+        }
+        else
+        {
+            playInTeam.GetComponentInChildren<Text>().text = "No";
+            color = Color.HSVToRGB(0f, 0.5f, 1f);
+        }
+        SetColorToBtn(playInTeam, color);
+    }
+    private void SetinTeam(bool value)
+    {
+        inTeam = value;
         DisplayTeamButton(inTeam);
         var color = playInTeam.colors.normalColor;
         if (inTeam)
@@ -224,6 +276,16 @@ public class MainMenu : MonoBehaviour
         }
         inputs.Clear();
         inputs.AddRange(inputLocal);
+        if (gameModeName.text == "Soccer")
+        {
+            submenus[0].SetActive(true);
+            SetinTeam(true);
+        }
+        else
+        {
+            submenus[0].SetActive(false);
+            SetinTeam(false);
+        }
         
     }
     private void NextMap()
@@ -308,10 +370,30 @@ public class MainMenu : MonoBehaviour
         colorBlock.pressedColor = Color.HSVToRGB(h, s, 1f / 4f * v); ;
         input.colors = colorBlock;
     }
+    private void SetColorToSlider(Slider slider, Color color)
+    {
+        var colorBlock = slider.colors;
+        var h = 0f;
+        var s = 0f;
+        var v = 0f;
+        Color.RGBToHSV(color, out h, out s, out v);
+        colorBlock.normalColor = color;
+        colorBlock.highlightedColor = Color.HSVToRGB(h, s, 3f / 4f * v);
+        colorBlock.selectedColor = Color.HSVToRGB(h, s, 1f / 2f * v);
+        colorBlock.pressedColor = Color.HSVToRGB(h, s, 1f / 4f * v); ;
+        slider.colors = colorBlock;
+    }
     private void ActualizeColor(int playerNb)
     {
-        playerPicture[playerNb].sprite = SpriteMaker.GetInstance().ColorSaturateSprite(playerPicture[playerNb].sprite, colors[playerNb], FilterMode.Bilinear);
-        playerColor[playerNb].GetComponentInChildren<Image>().color = colors[playerNb];
+        playerPicture[playerNb].sprite = SpriteMaker.GetInstance().ColorSaturateSprite(playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetPicture(), 
+                                                                                        colors[playerNb],
+                                                                                        playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetBaseColor(),
+                                                                                        FilterMode.Bilinear);
+        var h = 0f;
+        var s = 0f;
+        var v = 0f;
+        Color.RGBToHSV(colors[playerNb], out h, out s, out v);
+        playerColor[playerNb].GetComponentInChildren<Image>().color = Color.HSVToRGB(h, 0.7f, v);
     }
     private void ActualizeTeamColor(int teamNb)
     {
@@ -331,7 +413,7 @@ public class MainMenu : MonoBehaviour
         {
             spawnwPos[i] = new Vector3(map.GetPositions()[i].x, map.GetPositions()[i].y, map.GetPositions()[i].z);
         }
-        if (playInTeam)
+        if (inTeam)
         {
             var teamACount = 0;
             var teamBCount = 0;
@@ -339,6 +421,7 @@ public class MainMenu : MonoBehaviour
 
             for (int i = 0; i < nbPlayers; i++)
             {
+                Debug.Log("MainMenu, ChangeScene : spawnPos[0] = " + spawnwPos[0]);
                 if (numTeam[i] == 1)
                 {
                     teamACount++;
@@ -403,9 +486,11 @@ public class MainMenu : MonoBehaviour
                 soccer.SetTeamNames(new string[] { TeamName[0].text, TeamName[1].text });
             }
             soccer.SetUI();
+            soccer.SetGameTime(gameTime * 60f);
             FindObjectOfType<SoccerMap>().SetMode(soccer);
             //soccer.SetGoals(map.gameObject.GetComponent<SoccerMap>().GetGoals());
         }
+
 
         mode.ResetGame();
     }

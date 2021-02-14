@@ -53,18 +53,17 @@ public class PlayerController : MassicObject
     }
     public void SetInteractables()
     {
-        interactables.Clear();
+        /*interactables.Clear();
         var interacts = FindObjectsOfType<CelestialObject>();
         foreach (CelestialObject obj in interacts)
         {
             if (obj.gameObject != this.gameObject && obj.GetSize() >= size) interactables.Add(obj);
-        }
-        body.isKinematic = true;
+        }*/
     }
     public void ClearInteractables()
     {
         interactables.Clear();
-        body.isKinematic = true;
+        //body.isKinematic = true;
     }
 
     public void SetMove(Vector2 dir)
@@ -81,7 +80,8 @@ public class PlayerController : MassicObject
     }
     public void SetCanMove(bool value)
     {
-        body.isKinematic = !value;
+        if (value) body.bodyType = RigidbodyType2D.Dynamic; 
+        else body.bodyType = RigidbodyType2D.Static;
     }
     public void Dash(bool perf, bool canc)
     {
