@@ -383,17 +383,35 @@ public class MainMenu : MonoBehaviour
         colorBlock.pressedColor = Color.HSVToRGB(h, s, 1f / 4f * v); ;
         slider.colors = colorBlock;
     }
-    private void ActualizeColor(int playerNb)
-    {
-        playerPicture[playerNb].sprite = SpriteMaker.GetInstance().ColorSaturateSprite(playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetPicture(), 
-                                                                                        colors[playerNb],
-                                                                                        playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetBaseColor(),
-                                                                                        FilterMode.Bilinear);
+private IEnumerator WaitForSprite(CoroutineWithData corout, int playerNb)
+{
+        while (!(corout.result is Sprite) || corout.result == null)
+        {
+            Debug.Log("MainMenu, WaitForSprite : data is null");
+            yield return false;
+        }
+
+        playerPicture[playerNb].sprite = (Sprite) corout.result;
+
         var h = 0f;
         var s = 0f;
         var v = 0f;
         Color.RGBToHSV(colors[playerNb], out h, out s, out v);
         playerColor[playerNb].GetComponentInChildren<Image>().color = Color.HSVToRGB(h, 0.7f, v);
+    }
+private void ActualizeColor(int playerNb)
+    {
+        /*playerPicture[playerNb].sprite = SpriteMaker.GetInstance().ColorSaturateSprite(playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetPicture(), 
+                                                                                        colors[playerNb],
+                                                                                        playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetBaseColor(),
+                                                                                        FilterMode.Bilinear);*/
+
+        CoroutineWithData cd = new CoroutineWithData(this, SpriteMaker.GetInstance().ColorSaturateSprite(playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetPicture(),
+                                                                                        colors[playerNb],
+                                                                                        playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetBaseColor(),
+                                                                                        FilterMode.Bilinear));
+        StartCoroutine(WaitForSprite(cd, playerNb));
+
     }
     private void ActualizeTeamColor(int teamNb)
     {

@@ -144,9 +144,9 @@ public class SpriteMaker
 
     }
 
-    public Sprite ColorSaturateSprite(Sprite sprite, Color color, Color baseColor, FilterMode mode)
+    public IEnumerator ColorSaturateSprite(Sprite sprite, Color color, Color baseColor, FilterMode mode)
     {
-        if (sprite == null) return Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 4, 4), Vector2.one * 0.5f); ;
+        if (sprite == null) yield return Sprite.Create(Texture2D.whiteTexture, new Rect(0, 0, 4, 4), Vector2.one * 0.5f); ;
         var importedTexture = sprite.texture;
         var width = importedTexture.width;
         var height = importedTexture.height;
@@ -154,7 +154,6 @@ public class SpriteMaker
         var sbase = 0f;
         var vbase = 0f;
         Color.RGBToHSV(baseColor, out hbase, out sbase, out vbase);
-        Debug.Log("Color Color : h = "  +  hbase);
 
         byte[] textureTmp = importedTexture.GetRawTextureData();
 
@@ -184,15 +183,17 @@ public class SpriteMaker
                     newTexture.SetPixel(x, y, outputColor);
                 }
                 else newTexture.SetPixel(x, y, new Color(0f, 0f, 0f, 0f));
-
             }
+
+            Debug.Log("SpriteMaker, ColorSaturateSprite : " + (x % newTexture.width / 10));
+            if (x % newTexture.width / 10 == 0) yield return false;
         }
 
         newTexture.filterMode = mode;
         newTexture.Apply();
 
         Sprite newSprite = Sprite.Create(newTexture, sprite.rect, Vector2.one * 0.5f, sprite.pixelsPerUnit);
-        return newSprite;
+        yield return newSprite;
 
     }
 
@@ -207,6 +208,7 @@ public class SpriteMaker
 
         Texture2D oldTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
         Texture2D newTexture = new Texture2D(width, height, TextureFormat.RGBA32, false);
+        newTexture.filterMode = mode;
 
         oldTexture.LoadRawTextureData(textureTmp);
 
@@ -232,7 +234,7 @@ public class SpriteMaker
             }
         }
 
-        newTexture.filterMode = mode;
+        
         newTexture.Apply();
 
         return newTexture;
