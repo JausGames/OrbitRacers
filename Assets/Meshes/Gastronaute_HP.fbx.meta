@@ -1,0 +1,220 @@
+fileFormatVersion: 2
+guid: 007c3561caa66e2408b7378697105b1a
+ModelImporter:
+  serializedVersion: 20200
+  internalIDToNameTable:
+  - first:
+      74: -1412300944855413334
+    second: Camera|Action
+  - first:
+      74: 1121879838218156029
+    second: Camera|Action.001
+  - first:
+      74: -3809952647493575977
+    second: Camera|CylinderAction
+  - first:
+      74: -798603764054440329
+    second: Camera|PointAction
+  - first:
+      74: -1958668491520462804
+    second: Camera|SphereAction
+  - first:
+      74: 8288812126547960672
+    second: Camera|SphereAction.001
+  - first:
+      74: -4272380807755653195
+    second: Point|Action
+  - first:
+      74: 3855303858080416313
+    second: Point|Action.001
+  - first:
+      74: 8721032474875738517
+    second: Point|CylinderAction
+  - first:
+      74: 1987535635640810422
+    second: Point|PointAction
+  - first:
+      74: 7059857449796642127
+    second: Point|SphereAction
+  - first:
+      74: 7480731982662656839
+    second: Point|SphereAction.001
+  - first:
+      74: 8912695010781723320
+    second: pipes|Action
+  - first:
+      74: -4965158631718985359
+    second: pipes|Action.001
+  - first:
+      74: 2921975217842385938
+    second: pipes|CylinderAction
+  - first:
+      74: 1560041565884639043
+    second: pipes|PointAction
+  - first:
+      74: 6031222266082834887
+    second: pipes|SphereAction
+  - first:
+      74: -4065717839597238126
+    second: pipes|SphereAction.001
+  - first:
+      74: 2902266206063858269
+    second: Grastronaute_LP|Action
+  - first:
+      74: 4004425993560862226
+    second: Grastronaute_LP|Action.001
+  - first:
+      74: 4923623710057165580
+    second: Grastronaute_LP|CylinderAction
+  - first:
+      74: 3763720317637886271
+    second: Grastronaute_LP|PointAction
+  - first:
+      74: -7024639924734683786
+    second: Grastronaute_LP|SphereAction
+  - first:
+      74: -8027189030035222398
+    second: Grastronaute_LP|SphereAction.001
+  - first:
+      74: -3584619823844665163
+    second: metarig|Action
+  - first:
+      74: -7079218833480922270
+    second: metarig|Action.001
+  - first:
+      74: -1907765259568191608
+    second: metarig|CylinderAction
+  - first:
+      74: -7650237148514564381
+    second: metarig|PointAction
+  - first:
+      74: 1201874199590101720
+    second: metarig|SphereAction
+  - first:
+      74: 4688200562650946739
+    second: metarig|SphereAction.001
+  - first:
+      74: 830764560904771046
+    second: metarig|sWAAGG
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Clothes
+    second: {fileID: 2100000, guid: 8c541fc38cf79b84bb20f8fc87f1f6d5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mask
+    second: {fileID: 2100000, guid: d7b6f3a2a04cf674f939cf3e82d8c60b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Mask_Glass
+    second: {fileID: 2100000, guid: 28c6bceb936e66f40b968a71443b666b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Platic
+    second: {fileID: 2100000, guid: 7b54da934197989499deef705f1b195f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Tubes
+    second: {fileID: 2100000, guid: 10b5ff10755bc14438538bbb3601b75e, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

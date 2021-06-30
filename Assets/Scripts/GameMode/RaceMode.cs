@@ -6,13 +6,17 @@ public class RaceMode : GameMode
 {
     [SerializeField] private uint maxDoor;
     [SerializeField] private uint[] playersDoor;
-    [SerializeField] private uint maxLap = 3;
+    [SerializeField] private uint nbLap = 1;
     [SerializeField] private uint[] playersLap;
     [SerializeField] private Player winner;
 
     private void Awake()
     {
         mode = GetModes()[0];
+    }
+    public void SetLapNumber(int max)
+    {
+        nbLap = (uint) Mathf.Abs(max);
     }
     public void SetMaxDoor(uint max)
     {
@@ -36,7 +40,7 @@ public class RaceMode : GameMode
         {
             playersDoor[playerId] = nbDoor;
             playersLap[playerId]++;
-            if (playersLap[playerId] == maxLap) { winner = player; MatchManager.instance.PlayerWin(player); }
+            if (playersLap[playerId] == nbLap) { winner = player; MatchManager.instance.PlayerWin(player, "Chrono" + "\n" + "Bien joué le boss"); }
         }
     }
     public override void PlayFireworks(ParticleSystem particle)

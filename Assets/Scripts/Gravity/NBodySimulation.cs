@@ -41,7 +41,7 @@ public class NBodySimulation : MonoBehaviour
     {
         foreach (CelestialObject body in bodies)
         {
-            body.SetSpriteColor();
+            //body.SetSpriteColor();
         }
     }
     public void RemoveObject(CelestialObject obj)
@@ -58,6 +58,10 @@ public class NBodySimulation : MonoBehaviour
             var radius = body.GetRadius();
             var pos = body.Position;
             var mass = body.GetMass();
+            if(mass < 0f)
+            {
+                Debug.Log("Repulse");
+            }
             float sqrDst = Mathf.Clamp( (pos - point).sqrMagnitude, 
                                         (radius / 5f) * (body.GetRadius() / 5f), 
                                         (pos - point).sqrMagnitude);
@@ -66,7 +70,7 @@ public class NBodySimulation : MonoBehaviour
                 Debug.Log("Check max force : max : " + (radius / 5f) * (radius / 5f) + " , value = " + sqrDst);
             }
             Vector3 forceDir = (pos - point).normalized;
-            acceleration += forceDir * Universe.gravitationalConstant * mass / sqrDst;
+            acceleration += (forceDir * Universe.gravitationalConstant * mass) / sqrDst;
             
         }
 

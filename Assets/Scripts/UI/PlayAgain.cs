@@ -9,6 +9,7 @@ public class PlayAgain : MonoBehaviour
 	public Button no;
 	public Button yes;
 	public bool playAgain = false;
+	[SerializeField] private Text infos;
 	[SerializeField] private Text winnerName;
 
 	void Start()
@@ -45,9 +46,11 @@ public class PlayAgain : MonoBehaviour
 		gameObject.SetActive(false);
 		MatchManager.instance.ResetGame();
 	}
-	public void SetWinnerName(string name, Color color)
+
+	public void SetWinnerName(string name, Color color, string infos)
 	{
-		winnerName.text = name + " !";
+		this.infos.text = infos;
+		winnerName.text = name + " wins !";
 		winnerName.color = color;
 	}
 }

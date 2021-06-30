@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,7 +15,9 @@ public class Player : MonoBehaviour
     [SerializeField] public Rigidbody body;
     [SerializeField] Sprite image;
     [SerializeField] string name;
-    [SerializeField] Color baseColor;
+    [SerializeField] Color color;
+    [SerializeField] Material clothesMaterial;
+    [SerializeField] Renderer bodyRenderer;
     TrailRenderer trail;
     // Start is called before the first frame update
     void Awake()
@@ -24,6 +27,7 @@ public class Player : MonoBehaviour
         controller = GetComponent<PlayerController>();
         //combat = GetComponent<PlayerCombat>();
         body = GetComponent<Rigidbody>();
+        //bodyRenderer.materials[3] = new Material(clothesMaterial);
     }
     public Sprite GetPicture()
     {
@@ -34,9 +38,9 @@ public class Player : MonoBehaviour
         return name;
     }
 
-    public Color GetBaseColor()
+    public Color GetColor()
     {
-        return baseColor;
+        return color;
     }
     /*public bool GetAlive()
     {
@@ -64,5 +68,8 @@ public class Player : MonoBehaviour
         //controller.SetFreeze(true);
     }
 
-
+    public PlayerController GetController()
+    {
+        return controller;
+    }
 }

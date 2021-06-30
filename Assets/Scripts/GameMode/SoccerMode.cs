@@ -24,16 +24,18 @@ public class SoccerMode : GameMode
     private void Start()
     {
         mode = GetModes()[1];
-        timeLeft = gameTime;
+        //timeLeft = gameTime;
         Debug.Log("PlayerCount SoccerMode : " + PlayerManager.instance.GetPlayers().Count);
         //SetUI();
         CreateBall();
+        //texts[0].enabled = false;
     }
 
     private void Update()
     {
         if (gameOver) return;
-        if (timeLeft <= 0f) EndGame();
+        //if (timeLeft <= 0f) EndGame();
+        if (chrono.GetCurrentTime() <= 0f) EndGame();
         if (waitTime > 0f && !inGame)
         {
             waitTime -= Time.deltaTime;
@@ -52,7 +54,7 @@ public class SoccerMode : GameMode
             waitTime = 3f;
         }
 
-        if (inGame)
+       /* if (inGame)
         {
             timeLeft -= Time.deltaTime;
             if (timeLeft > 10f) texts[0].text = Mathf.CeilToInt(timeLeft).ToString("00");
@@ -60,8 +62,8 @@ public class SoccerMode : GameMode
             else texts[0].text = "Game Over";
             waitTime = 4f;
 
-        }
-        if (overTime && texts[0].text != "Overtime") texts[0].text = "Overtime";
+        }*/
+        //if (overTime && texts[0].text != "Overtime") texts[0].text = "Overtime";
     }
 
     private void CreateBall()
@@ -97,7 +99,7 @@ public class SoccerMode : GameMode
     }
     public void RestartKickoff()
     {
-        MatchManager.instance.ResetGame();
+        MatchManager.instance.ResetGame(false);
     }
     public void SetTeamNames(string[] names)
     {
@@ -273,8 +275,9 @@ public class SoccerMode : GameMode
         rightTeamScore = 0;
         overTime = false;
         UpdateScore();
-        timeLeft = gameTime;
-        if (texts.Count != 0) texts[0].text = Mathf.CeilToInt(timeLeft).ToString();
+        //timeLeft = gameTime;
+        chrono.ResetChrono();
+       // if (texts.Count != 0) texts[0].text = Mathf.CeilToInt(timeLeft).ToString();
     }
     public void ResetBallPosition()
     {
@@ -293,6 +296,11 @@ public class SoccerMode : GameMode
     {
         return inGame;
     }
+    public void SetInGame(bool inGame)
+    {
+        this.inGame = inGame;
+        chrono.SetPause(!inGame);
+    }
     public void UpdateScore()
     {
         Debug.Log("SoccerMode, UpdateScore");
@@ -305,7 +313,7 @@ public class SoccerMode : GameMode
         Debug.Log("SoccerMode, Score");
         if (isLeft) leftTeamScore++;
         else rightTeamScore++;
-        inGame = false;
+        SetInGame(false);
         waitTime = 2f;
         ball.GetComponent<Rigidbody2D>().velocity = ball.GetComponent<Rigidbody2D>().velocity / 4f;
         UpdateScore();
@@ -320,7 +328,7 @@ public class SoccerMode : GameMode
     {
         Debug.Log("SoccerMode, EndGame");
         DisplayUI(false);
-        inGame = false;
+        SetInGame(false);
         waitTime = 3f;
         gameOver = true;
         GetWinner();
@@ -329,14 +337,30 @@ public class SoccerMode : GameMode
     {
         if (!teamGame)
         {
-            if (leftTeamScore > rightTeamScore) MatchManager.instance.PlayerWin(PlayerManager.instance.GetPlayerById(0));
-            else if (leftTeamScore < rightTeamScore) MatchManager.instance.PlayerWin(PlayerManager.instance.GetPlayerById(1));
+            if (leftTeamScore > rightTeamScore)
+            {
+                MatchManager.instance.PlayerWin(PlayerManager.instance.GetPlayerById(0), "Score  " + leftTeamScore + ":" + rightTeamScore + "\nC'est beau ça chef !");
+                chrono.SetInGame(false, true, true);
+            }
+            else if (leftTeamScore < rightTeamScore)
+            { 
+                MatchManager.instance.PlayerWin(PlayerManager.instance.GetPlayerById(1), "Score  " + leftTeamScore + ":" + rightTeamScore + "\nC'est beau ça chef !");
+                chrono.SetInGame(false, true, true);
+            }
             else StartOvertime();
         }
         else
         {
-            if (leftTeamScore > rightTeamScore) MatchManager.instance.TeamWin(teamNames[0], teamColors[0]);
-            else if (leftTeamScore < rightTeamScore) MatchManager.instance.TeamWin(teamNames[1], teamColors[1]);
+            if (leftTeamScore > rightTeamScore)
+            { 
+                MatchManager.instance.TeamWin(teamNames[0], teamColors[0], "Score  " + leftTeamScore + ":" + rightTeamScore + "\nIls sont deux dans l'monde à faire ça !");
+                chrono.SetInGame(false, true, true);
+            }
+            else if (leftTeamScore < rightTeamScore)
+            { 
+                MatchManager.instance.TeamWin(teamNames[1], teamColors[1], "Score  " + leftTeamScore + ":" + rightTeamScore + "\nIls sont deux dans l'monde à faire ça !");
+                chrono.SetInGame(false, true, true);
+            }
             else StartOvertime();
         }
     }
@@ -344,18 +368,20 @@ public class SoccerMode : GameMode
     {
         Debug.Log("SoccerMode, StarGame");
         gameOver = false;
-        inGame = true;
+        SetInGame(true);
         waitTime = 0f;
         ResetBallPosition();
         DisplayUI(true);
     }
     public void StartOvertime()
     {
+        chrono.SetPause(true);
+        chrono.SetOvertime(true);
         overTime = true;
         StartGame();
-        texts[0].text = "Overtime";
+        //texts[0].text = "Overtime";
         inGame = false;
-        timeLeft = 20000f;
+        //timeLeft = 20000f;
         ball.GetComponent<Rigidbody2D>().velocity = ball.GetComponent<Rigidbody2D>().velocity / 4f;
     }
     public override void PlayFireworks(ParticleSystem particle)
@@ -365,7 +391,8 @@ public class SoccerMode : GameMode
     }
     public void SetGameTime(float time)
     {
+        chrono.SetGameTime(time);
         gameTime = time;
-        timeLeft = gameTime;
+        //timeLeft = gameTime;
     }
 }

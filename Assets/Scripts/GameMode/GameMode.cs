@@ -5,6 +5,7 @@ using UnityEngine;
 abstract public class GameMode : MonoBehaviour
 {
     protected string mode;
+    protected Chronometer chrono;
     static private List<string> modes = new List<string>{"Race", "Soccer"};
 
     abstract public void ResetGame();
@@ -12,6 +13,10 @@ abstract public class GameMode : MonoBehaviour
     virtual public void StartGame()
     {
 
+    }
+    virtual public void SetChronometer(Chronometer chrono)
+    {
+        this.chrono = chrono;
     }
 
     static public List<string> GetModes()
