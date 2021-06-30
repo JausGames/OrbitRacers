@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -175,5 +176,12 @@ public class PlayerManager : MonoBehaviour
         alive.Clear();
     }
 
+    public void SetInteractables()
+    {
+        foreach(Player pl in players)
+        {
+            pl.GetController().SetInteractables();
+        }
+    }
 }
 

@@ -11,7 +11,7 @@ public class TestRadius : MonoBehaviour
     {
         parent = GetComponent<CelestialObject>();
         var circleCol = gameObject.AddComponent<CircleCollider2D>();
-        circleCol.radius = 10f / parent.GetRadius() * parent.GetGravity() * 4f;
+        circleCol.radius = 10f / parent.GetRadius() * Mathf.Abs(parent.GetGravity()) * 4f;
         circleCol.isTrigger = true;
 
     }

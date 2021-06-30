@@ -8,6 +8,7 @@ public class MatchManager : MonoBehaviour
     [SerializeField] GameObject canvas = null;
     [SerializeField] GameObject playAgainUI = null;
     [SerializeField] GameObject timerUI = null;
+    [SerializeField] Chronometer chronometer = null;
     [SerializeField] PlayAgain playAgain = null;
     [SerializeField] int nbPlayers = 0;
     [SerializeField] ParticleSystem fireworks;
@@ -50,6 +51,8 @@ public class MatchManager : MonoBehaviour
     public void StartGame()
     {
         timerUI.SetActive(false);
+        chronometer.SetInGame(true, false);
+        chronometer.ShowHideChrono(true);
         playerManager.SetCanMove(true);
         GetComponent<GameMode>().StartGame();
     }
@@ -58,6 +61,24 @@ public class MatchManager : MonoBehaviour
         playAgain.playAgain = false;
         playerManager.ResetMatchUp();
         timerUI.SetActive(true);
+        chronometer.ResetChrono();
+        chronometer.ShowHideChrono(false);
+        if (GetComponent<SoccerMode>())
+        {
+            GetComponent<SoccerMode>().ResetBallPosition();
+            GetComponent<SoccerMode>().DisplayUI(true);
+        }
+    }
+    public void ResetGame(bool resetAndHideChrono)
+    {
+        playAgain.playAgain = false;
+        playerManager.ResetMatchUp();
+        timerUI.SetActive(true);
+        if (resetAndHideChrono)
+        {
+            chronometer.ResetChrono();
+            chronometer.ShowHideChrono(false);
+        }
         if (GetComponent<SoccerMode>())
         {
             GetComponent<SoccerMode>().ResetBallPosition();
@@ -73,19 +94,26 @@ public class MatchManager : MonoBehaviour
     {
         PlayerManager.instance.DeletePlayers();
     }
-    public void PlayerWin(Player player)
+    public void PlayerWin(Player player, string infos)
     {
-        playAgain.SetWinnerName(player.GetName(), player.controller.GetColor());
+        if (infos.Contains("Chrono")) infos = infos.Substring(0, 6) + "  " + chronometer.GetDisplayedChrono() + infos.Substring(6);
+        playAgain.SetWinnerName(player.GetName(), player.controller.GetColor(), infos);
         playAgainUI.SetActive(true);
+        chronometer.SetInGame(false, false);
         GetComponent<GameMode>().ResetGame();
         GetComponent<GameMode>().PlayFireworks(fireworks);
     }
-    public void TeamWin(string teamName, Color teamColor)
+    public void TeamWin(string teamName, Color teamColor, string infos)
     {
-        playAgain.SetWinnerName(teamName, teamColor);
+        playAgain.SetWinnerName(teamName, teamColor, infos);
         playAgainUI.SetActive(true);
+        chronometer.SetInGame(false, false);
         GetComponent<GameMode>().ResetGame();
         GetComponent<GameMode>().PlayFireworks(fireworks);
+    }
+    public Chronometer GetChrono()
+    {
+        return chronometer;
     }
 
 

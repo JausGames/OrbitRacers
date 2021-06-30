@@ -14,6 +14,24 @@ public class ProjectileObject : MassicObject
     private float timeLeft = 3f;
     [SerializeField] private NBodySimulation nBody;
     private TrailRenderer trail;
+
+    void Awake()
+    {
+        body = GetComponent<Rigidbody2D>();
+        radius = transform.localScale.x * 10;
+        SetMass();
+        body.mass = mass;
+        var interacts = FindObjectsOfType<CelestialObject>();
+        foreach (CelestialObject obj in interacts)
+        {
+            if (obj.gameObject != this.gameObject &&
+                (obj.GetSize() > size || obj.GetSize() == size && enableSameSizeInteract)) interactables.Add(obj);
+        }
+        //SetSpriteColor();
+        /*GameObject gf = new GameObject("GravityField");
+        gf.transform.SetParent(transform);*/
+        gameObject.AddComponent<TestRadius>();
+    }
     // Start is called before the first frame update
     void Start()
     {

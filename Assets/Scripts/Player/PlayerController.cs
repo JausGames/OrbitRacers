@@ -12,6 +12,7 @@ public class PlayerController : MassicObject
     float counterDashTime;
     [SerializeField] private Vector3 move;
     [SerializeField] private float index;
+    [SerializeField] Renderer bodyRenderer;
 
 
     // Start is called before the first frame update
@@ -20,13 +21,25 @@ public class PlayerController : MassicObject
         mass = 1000f;
         body = GetComponent<Rigidbody2D>();
         radius = transform.localScale.x * 10;
+        surfaceGravity = (mass * Universe.gravitationalConstant * 6f) / (radius * radius); 
         body.mass = mass;
-        var interacts = FindObjectsOfType<CelestialObject>();
-        foreach (CelestialObject obj in interacts)
-        {
-            if (obj.gameObject != this.gameObject &&
-                (obj.GetSize() > size || obj.GetSize() == size && enableSameSizeInteract)) interactables.Add(obj);
-        }
+        gameObject.AddComponent<TestRadius>();
+    }
+    override public void SetSpriteColor()
+    {
+        bodyRenderer.materials[0].color = color;
+
+        var trail = GetComponent<TrailRenderer>();
+        if (trail == null) trail = GetComponentInChildren<TrailRenderer>();
+
+        if (trail == null) return;
+        // A simple 2 color gradient with a fixed alpha of 1.0f.
+        Gradient gradient = new Gradient();
+        gradient.SetKeys(
+            new GradientColorKey[] { new GradientColorKey(color, 0.0f), new GradientColorKey(Color.white, 1.0f) },
+            new GradientAlphaKey[] { new GradientAlphaKey(1f, 0.0f), new GradientAlphaKey(0.0f, 1.0f) }
+        );
+        trail.colorGradient = gradient;
     }
     public void StopMotion()
     {
@@ -53,12 +66,14 @@ public class PlayerController : MassicObject
     }
     public void SetInteractables()
     {
-        /*interactables.Clear();
+        interactables.Clear();
+        
         var interacts = FindObjectsOfType<CelestialObject>();
         foreach (CelestialObject obj in interacts)
         {
-            if (obj.gameObject != this.gameObject && obj.GetSize() >= size) interactables.Add(obj);
-        }*/
+            if (obj.gameObject != this.gameObject && 
+                (obj.GetSize() > size || obj.GetSize() == size && enableSameSizeInteract)) interactables.Add(obj);
+        }
     }
     public void ClearInteractables()
     {

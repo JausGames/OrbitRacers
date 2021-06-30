@@ -25,7 +25,8 @@ public class MainMenu : MonoBehaviour
     [Header("Menus - Player - Color")]
     [SerializeField] private List<Slider> playerColor = new List<Slider>();
     [SerializeField] private Color[] colors;
-    [SerializeField] private List<Image> playerPicture = new List<Image>();
+    [SerializeField] private List<RawImage> playerPicture = new List<RawImage>();
+    [SerializeField] private List<Renderer> playerRenderer = new List<Renderer>();
 
     [Header("Settings")]
     [SerializeField] private Button play;
@@ -46,6 +47,11 @@ public class MainMenu : MonoBehaviour
 
     [Header("Submenus")]
     [SerializeField] List<GameObject> submenus = new List<GameObject>();
+    [SerializeField] List<GameObject> waitObject = new List<GameObject>();
+    [Header("Submenus - Nb Lap")]
+    [SerializeField] private int nbLap;
+    [SerializeField] private Text nbLapLabel;
+    [SerializeField] private Slider nbLapSlider;
     [Header("Submenus - Time")]
     [SerializeField] private float gameTime;
     [SerializeField] private Text gameTimeLabel;
@@ -129,6 +135,8 @@ public class MainMenu : MonoBehaviour
 
 
         timeSlider.onValueChanged.AddListener(delegate { ChangeGameTime(timeSlider.value); });
+        nbLapSlider.onValueChanged.AddListener(delegate { ChangeNbLap((int)nbLapSlider.value); });
+
 
         ChangePlayerColor(0, 0f);
         ChangePlayerColor(1, 0.25f);
@@ -142,9 +150,16 @@ public class MainMenu : MonoBehaviour
         SwithTeam(1);
     }
 
+    private void ChangeNbLap(int value)
+    {
+        if(value > 1) nbLapLabel.text = value.ToString() + " laps";
+        else nbLapLabel.text = value.ToString() + " lap";
+        nbLap = value;
+    }
     private void ChangeGameTime(float value)
     {
-        gameTimeLabel.text = value.ToString() + " minutes";
+        if (value > 1f) gameTimeLabel.text = value.ToString() + " minutes";
+        else gameTimeLabel.text = value.ToString() + " minute";
         gameTime = value;
     }
 
@@ -224,6 +239,10 @@ public class MainMenu : MonoBehaviour
         }
         title.gameObject.SetActive(true);
         menus[menuOrder].SetActive(true);
+        foreach(GameObject obj in waitObject)
+        {
+            obj.SetActive(true);
+        }
     }
     public void DisplayMenu(bool value)
     {
@@ -233,6 +252,11 @@ public class MainMenu : MonoBehaviour
             menu.SetActive(value);
         }
         else menus[menus.Count - 1].SetActive(value);
+
+        foreach (GameObject obj in waitObject)
+        {
+            obj.SetActive(value);
+        }
 
         title.gameObject.SetActive(value);
         this.enabled = value;
@@ -278,12 +302,14 @@ public class MainMenu : MonoBehaviour
         inputs.AddRange(inputLocal);
         if (gameModeName.text == "Soccer")
         {
-            submenus[0].SetActive(true);
+            submenus[0].SetActive(false);
+            submenus[1].SetActive(true);
             SetinTeam(true);
         }
         else
         {
-            submenus[0].SetActive(false);
+            submenus[0].SetActive(true);
+            submenus[1].SetActive(false);
             SetinTeam(false);
         }
         
@@ -336,8 +362,9 @@ public class MainMenu : MonoBehaviour
     }
     private void ChangePlayerColor(int playerNb, float value)
     {
-        colors[playerNb] = Color.HSVToRGB(value, 1f, 1f);
+        colors[playerNb] = Color.HSVToRGB(value, 0.8f, 0.7f);
         ActualizeColor(playerNb);
+        SetColorToSlider(playerColor[playerNb], Color.HSVToRGB(value, 1f, 1f));
     }
     private void ChangeTeamColor(int teamNb, float value)
     {
@@ -385,7 +412,7 @@ public class MainMenu : MonoBehaviour
     }
 private IEnumerator WaitForSprite(CoroutineWithData corout, int playerNb)
 {
-        while (!(corout.result is Sprite) || corout.result == null)
+        /*while (!(corout.result is Sprite) || corout.result == null)
         {
             Debug.Log("MainMenu, WaitForSprite : data is null");
             yield return false;
@@ -397,7 +424,8 @@ private IEnumerator WaitForSprite(CoroutineWithData corout, int playerNb)
         var s = 0f;
         var v = 0f;
         Color.RGBToHSV(colors[playerNb], out h, out s, out v);
-        playerColor[playerNb].GetComponentInChildren<Image>().color = Color.HSVToRGB(h, 0.7f, v);
+        playerColor[playerNb].GetComponentInChildren<Image>().color = Color.HSVToRGB(h, 0.7f, v);*/
+        yield return true;
     }
 private void ActualizeColor(int playerNb)
     {
@@ -406,12 +434,14 @@ private void ActualizeColor(int playerNb)
                                                                                         playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetBaseColor(),
                                                                                         FilterMode.Bilinear);*/
 
-        CoroutineWithData cd = new CoroutineWithData(this, SpriteMaker.GetInstance().ColorSaturateSprite(playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetPicture(),
+        /*CoroutineWithData cd = new CoroutineWithData(this, SpriteMaker.GetInstance().ColorSaturateSprite(playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetPicture(),
                                                                                         colors[playerNb],
                                                                                         playerTypes[FindNameID(playerText[playerNb].text)].GetComponent<Player>().GetBaseColor(),
-                                                                                        FilterMode.Bilinear));
-        StartCoroutine(WaitForSprite(cd, playerNb));
+                                                                                        FilterMode.Bilinear));*/
+        //StartCoroutine(WaitForSprite(cd, playerNb));
 
+
+        playerRenderer[playerNb].materials[0].color = colors[playerNb];
     }
     private void ActualizeTeamColor(int teamNb)
     {
@@ -478,6 +508,7 @@ private void ActualizeColor(int playerNb)
         {
             mode = MatchManager.instance.gameObject.AddComponent(typeof(RaceMode)) as RaceMode;
             var race = mode.GetComponent<RaceMode>();
+            race.SetLapNumber(nbLap);
             race.SetMaxDoor((uint)(int)map.gameObject.GetComponent<RaceMap>().GetDoors().Length / 2 - 1);
         }
         PlayerManager.instance.SetColors(colors);
@@ -490,12 +521,15 @@ private void ActualizeColor(int playerNb)
         Debug.Log("ChangeScene");
         MatchManager.instance.SetPlayers(list);
         SceneManager.LoadScene(mapName.text + "Scene");
+        MatchManager.instance.GetChrono().SetMode(Chronometer.Mode.Countdown);
         if (type == typeof(SoccerMode))
         {
             mode = MatchManager.instance.gameObject.AddComponent(typeof(SoccerMode)) as SoccerMode;
             var soccer = mode.GetComponent<SoccerMode>();
             soccer.SetTeamGame(inTeam);
             soccer.SetTeamArray(numTeam);
+            MatchManager.instance.GetChrono().SetMode(Chronometer.Mode.Countdown);
+            soccer.SetChronometer(MatchManager.instance.GetChrono());
             if (inTeam)
             {
                 soccer.SetTeamColors(teamColors);
@@ -508,13 +542,18 @@ private void ActualizeColor(int playerNb)
             FindObjectOfType<SoccerMap>().SetMode(soccer);
             //soccer.SetGoals(map.gameObject.GetComponent<SoccerMap>().GetGoals());
         }
+        else if (type == typeof(RaceMode))
+        {
+            
+            MatchManager.instance.GetChrono().SetMode(Chronometer.Mode.Chrono);
+        }
 
-
+        PlayerManager.instance.SetInteractables();
         mode.ResetGame();
     }
     private void ChangePlayer(int nb)
     {
-        Debug.Log("Debug ok : ChangePlayer, nb = " + nb);
+        /*Debug.Log("Debug ok : ChangePlayer, nb = " + nb);
         switch (nb)
         {
             case 0:
@@ -568,17 +607,17 @@ private void ActualizeColor(int playerNb)
             default:
                 Debug.Log("Player selection Switch Case not correct");
                 break;
-        }
+        }*/
     }
     private string FindPlayerName(GameObject player)
     {
         return player.name;
     }
-   private Sprite FindSprite(int playerNb, int prevOrNext)
+   /*private Sprite FindSprite(int playerNb, int prevOrNext)
     {
         if (playerNb >= playerTypes.Count || playerNb <= 0) return playerTypes[playerNb - prevOrNext].GetComponent<Player>().GetPicture();
         else return playerTypes[playerNb - prevOrNext].GetComponent<Player>().GetPicture();
-    }
+    }*/
     private GameObject FindNamePlayer(string player)
     {
         foreach(GameObject obj in playerTypes)

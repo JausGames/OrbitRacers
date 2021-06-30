@@ -32,12 +32,12 @@ public class CelestialObject : MonoBehaviour
             if (obj.gameObject != this.gameObject && 
                 (obj.GetSize() > size || obj.GetSize() == size && enableSameSizeInteract)) interactables.Add(obj);
         }
-        SetSpriteColor();
+        //SetSpriteColor();
         /*GameObject gf = new GameObject("GravityField");
         gf.transform.SetParent(transform);*/
         gameObject.AddComponent<TestRadius>();
     }
-    public void SetSpriteColor()
+    virtual public void SetSpriteColor()
     {
         rend = GetComponent<SpriteRenderer>();
         if (rend == null) rend = GetComponentInChildren<SpriteRenderer>();
@@ -158,7 +158,7 @@ public class CelestialObject : MonoBehaviour
 
     public void SetMass()
     {
-        mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
+        mass = (surfaceGravity * radius * radius) / Universe.gravitationalConstant;
     }
     public float GetGravity()
     {
@@ -168,6 +168,6 @@ public class CelestialObject : MonoBehaviour
     {
         surfaceGravity = value;
         SetMass();
-        body.mass = surfaceGravity * radius * radius / Universe.gravitationalConstant;
+        body.mass = (surfaceGravity * radius * radius) / Universe.gravitationalConstant;
     }
 }
